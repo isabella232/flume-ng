@@ -142,8 +142,10 @@ public class HBaseSink extends AbstractSink implements Configurable {
       table = privilegedExecutor.execute(new PrivilegedExceptionAction<HTable>() {
         @Override
         public HTable run() throws Exception {
-          HTable table = new HTable(config, tableName);
-          table.setAutoFlush(false);
+	    // HACK - convert to use buffered mutator.
+	    // HTable table = new HTable(config, tableName);
+	    HTable table = null;
+	    //          table.setAutoFlush(false);
           // Flush is controlled by us. This ensures that HBase changing
           // their criteria for flushing does not change how we flush.
           return table;
@@ -377,14 +379,16 @@ public class HBaseSink extends AbstractSink implements Configurable {
       public Void run() throws Exception {
         for (Row r : actions) {
           if (r instanceof Put) {
-            ((Put) r).setWriteToWAL(enableWal);
+	      // HACK - use buffered mutator
+	      //((Put) r).setWriteToWAL(enableWal);
           }
           // Newer versions of HBase - Increment implements Row.
           if (r instanceof Increment) {
-            ((Increment) r).setWriteToWAL(enableWal);
+	      // HACK - use buffered mutator
+	      // ((Increment) r).setWriteToWAL(enableWal);
           }
         }
-        table.batch(actions);
+        //table.batch(actions);
         return null;
       }
     });
@@ -406,7 +410,8 @@ public class HBaseSink extends AbstractSink implements Configurable {
         }
 
         for (final Increment i : processedIncrements) {
-          i.setWriteToWAL(enableWal);
+	    // HACK
+	    // i.setWriteToWAL(enableWal);
           table.increment(i);
         }
         return null;

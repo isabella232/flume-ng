@@ -111,7 +111,7 @@ public class SimpleHbaseEventSerializer implements HbaseEventSerializer {
           rowKey = SimpleRowKeyGenerator.getUUIDKey(rowPrefix);
         }
         Put put = new Put(rowKey);
-        put.add(cf, plCol, payload);
+        put.addColumn(cf, plCol, payload);
         actions.add(put);
       } catch (Exception e) {
         throw new FlumeException("Could not get row key!", e);

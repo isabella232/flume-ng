@@ -189,12 +189,12 @@ public class RegexHbaseEventSerializer implements HbaseEventSerializer {
 
       for (int i = 0; i < colNames.size(); i++) {
         if (i != rowKeyIndex) {
-          put.add(cf, colNames.get(i), m.group(i + 1).getBytes(Charsets.UTF_8));
+          put.addColumn(cf, colNames.get(i), m.group(i + 1).getBytes(Charsets.UTF_8));
         }
       }
       if (depositHeaders) {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-          put.add(cf, entry.getKey().getBytes(charset), entry.getValue().getBytes(charset));
+          put.addColumn(cf, entry.getKey().getBytes(charset), entry.getValue().getBytes(charset));
         }
       }
       actions.add(put);
