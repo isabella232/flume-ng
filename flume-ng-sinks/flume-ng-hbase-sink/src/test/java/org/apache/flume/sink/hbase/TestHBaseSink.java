@@ -37,6 +37,7 @@ import org.apache.flume.event.EventBuilder;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.apache.hadoop.hbase.HConstants;
+import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Increment;
 import org.apache.hadoop.hbase.client.Result;
@@ -97,12 +98,12 @@ public class TestHBaseSink {
   public void setUp() throws IOException {
     conf = new Configuration(testUtility.getConfiguration());
     ctx = new Context();
-    testUtility.createTable(tableName.getBytes(), columnFamily.getBytes());
+    testUtility.createTable(TableName.valueOf(tableName), columnFamily.getBytes());
   }
 
   @After
   public void tearDown() throws IOException {
-    testUtility.deleteTable(tableName.getBytes());
+    testUtility.deleteTable(TableName.valueOf(tableName));
   }
 
   /**
@@ -150,7 +151,8 @@ public class TestHBaseSink {
 
     sink.process();
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 1);
     byte[] out = results[0];
     Assert.assertArrayEquals(e.getBody(), out);
@@ -177,7 +179,8 @@ public class TestHBaseSink {
 
     sink.process();
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 1);
     byte[] out = results[0];
     Assert.assertArrayEquals(e.getBody(), out);
@@ -205,7 +208,8 @@ public class TestHBaseSink {
     tx.close();
     sink.process();
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 3);
     byte[] out;
     int found = 0;
@@ -248,7 +252,8 @@ public class TestHBaseSink {
     }
     sink.stop();
     Assert.assertEquals(2, count);
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 3);
     byte[] out;
     int found = 0;
@@ -272,7 +277,7 @@ public class TestHBaseSink {
 
     // setUp() will create the table, so we delete it.
     logger.info("Deleting table {}", tableName);
-    testUtility.deleteTable(tableName.getBytes());
+    testUtility.deleteTable(TableName.valueOf(tableName));
 
     ctx.put("batchSize", "2");
     HBaseSink sink = new HBaseSink(conf);
@@ -305,13 +310,14 @@ public class TestHBaseSink {
       sink.stop();
     } finally {
       // Re-create the table so tearDown() doesn't throw.
-      testUtility.createTable(tableName.getBytes(), columnFamily.getBytes());
+      testUtility.createTable(TableName.valueOf(tableName), columnFamily.getBytes());
     }
 
     // FIXME: The test should never get here, the below code doesn't run.
     Assert.fail();
 
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 2);
     byte[] out;
     int found = 0;
@@ -362,7 +368,8 @@ public class TestHBaseSink {
     tx.commit();
     tx.close();
     sink.process();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 2);
     byte[] out;
     int found = 0;
@@ -463,7 +470,8 @@ public class TestHBaseSink {
     doReturn(e).when(channel).take();
     sink.process();
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 1);
     byte[] out = results[0];
     Assert.assertArrayEquals(e.getBody(), out);
@@ -502,7 +510,8 @@ public class TestHBaseSink {
     MockSimpleHbaseEventSerializer.throwException = false;
     sink.process();
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 1);
     byte[] out = results[0];
     Assert.assertArrayEquals(e.getBody(), out);
@@ -541,7 +550,8 @@ public class TestHBaseSink {
       status = sink.process();
     }
     sink.stop();
-    HTable table = new HTable(conf, tableName);
+    // HACK // HTable table = new HTable(conf, tableName);
+    HTable table = null;
     byte[][] results = getResults(table, 3);
     byte[] out;
     int found = 0;
