@@ -16,6 +16,7 @@
  */
 package org.apache.flume.source.kafka;
 
+import kafka.admin.RackAwareMode.Disabled$;
 import kafka.admin.AdminUtils;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServerStartable;
@@ -131,7 +132,7 @@ public class KafkaSourceEmbeddedKafka {
     ZkUtils zkUtils = ZkUtils.apply(zkClient, false);
     int replicationFactor = 1;
     Properties topicConfig = new Properties();
-    AdminUtils.createTopic(zkUtils, topicName, numPartitions, replicationFactor, topicConfig);
+    AdminUtils.createTopic(zkUtils, topicName, numPartitions, replicationFactor, topicConfig, Disabled$.MODULE$);
   }
 
 }
