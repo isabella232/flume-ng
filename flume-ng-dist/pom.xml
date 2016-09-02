@@ -215,7 +215,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-streaming-flume-sink_2.10</artifactId>
+      <artifactId>spark-streaming-flume-sink_${scala.binary.version}</artifactId>
     </dependency>
   </dependencies>
 

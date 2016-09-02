@@ -40,6 +40,8 @@ limitations under the License.
     <sourceJavaVersion>1.8</sourceJavaVersion>
     <targetJavaVersion>1.8</targetJavaVersion>
 
+    <scala.binary.version>${cdh.scala.binary.version}</scala.binary.version>
+
     <!-- defaults for flaky test and focused test exclusions -->
     <test.exclude.pattern>$</test.exclude.pattern> <!-- junk pattern -->
     <test.include.pattern>**/Test*.java</test.include.pattern>
@@ -484,7 +486,7 @@ limitations under the License.
 
           <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming-flume-sink_2.10</artifactId>
+            <artifactId>spark-streaming-flume-sink_${scala.binary.version}</artifactId>
             <version>${cdh.spark.version}</version>
           </dependency>
 
@@ -1633,12 +1635,12 @@ limitations under the License.
       <!-- Dependencies of Kafka source -->
       <dependency>
         <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka_2.10</artifactId>
+        <artifactId>kafka_${scala.binary.version}</artifactId>
         <version>${kafka.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka_2.10</artifactId>
+        <artifactId>kafka_${scala.binary.version}</artifactId>
         <version>${kafka.version}</version>
         <classifier>test</classifier>
         <scope>test</scope>
