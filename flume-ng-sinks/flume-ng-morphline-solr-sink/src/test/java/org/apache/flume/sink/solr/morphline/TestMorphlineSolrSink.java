@@ -39,7 +39,7 @@ import org.apache.flume.conf.Configurables;
 import org.apache.flume.event.EventBuilder;
 import org.apache.solr.SolrTestCaseJ4;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
@@ -68,7 +68,7 @@ import com.google.common.io.Files;
 public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
 
   private EmbeddedSource source;
-  private SolrServer solrServer;
+  private SolrClient solrServer;
   private MorphlineSink sink;
   private Map<String,Integer> expectedRecords;
 
@@ -184,7 +184,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
   }
   
   private void deleteAllDocuments() throws SolrServerException, IOException {
-    SolrServer s = solrServer;
+    SolrClient s = solrServer;
     s.deleteByQuery("*:*"); // delete everything!
     s.commit();
   }
