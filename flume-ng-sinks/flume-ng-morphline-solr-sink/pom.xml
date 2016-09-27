@@ -49,7 +49,7 @@ limitations under the License.
 
     <dependency>
       <groupId>org.kitesdk</groupId>
-      <artifactId>kite-morphlines-all</artifactId>
+      <artifactId>kite-morphlines-all-except-tika</artifactId>
       <version>${kite.version}</version>
       <exclusions>
         <exclusion>

@@ -23,6 +23,7 @@ import org.apache.flume.Context;
 import org.apache.flume.Event;
 import org.apache.flume.event.EventBuilder;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kitesdk.morphline.base.Fields;
 
@@ -107,6 +108,7 @@ public class TestMorphlineInterceptor extends Assert {
     assertNull(actual);
   }
 
+  @Ignore
   @Test
   /** morphline says route to southpole if it's an avro file, otherwise route to northpole */
   public void testIfDetectMimeTypeRouteToSouthPole() throws Exception {
@@ -126,6 +128,7 @@ public class TestMorphlineInterceptor extends Assert {
     assertEqualsEvent(expectedEvent, actual);
   }
 
+  @Ignore
   @Test
   /** morphline says route to southpole if it's an avro file, otherwise route to northpole */
   public void testIfDetectMimeTypeRouteToNorthPole() throws Exception {

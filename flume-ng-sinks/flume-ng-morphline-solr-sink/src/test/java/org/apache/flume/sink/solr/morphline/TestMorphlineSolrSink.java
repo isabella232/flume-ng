@@ -46,6 +46,7 @@ import org.apache.solr.common.SolrDocument;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -211,6 +212,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
     }
   }
 
+  @Ignore
   @Test
   public void testDocumentTypes() throws Exception {
     String path = RESOURCES_DIR + "/test-documents";
@@ -235,6 +237,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
     testDocumentTypesInternal(files);
   }
 
+  @Ignore
   @Test
   public void testDocumentTypes2() throws Exception {
     String path = RESOURCES_DIR + "/test-documents";

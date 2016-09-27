@@ -32,7 +32,6 @@ import org.apache.flume.conf.ConfigurationException;
 import org.apache.flume.conf.LogPrivacyUtil;
 import org.apache.flume.event.EventBuilder;
 import org.apache.flume.source.http.HTTPSourceHandler;
-import org.apache.tika.metadata.Metadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -117,7 +116,7 @@ public class BlobHandler implements HTTPSourceHandler {
     }
     Map<String, String> headers = new HashMap();
     if (request.getContentType() != null) {
-      headers.put(Metadata.CONTENT_TYPE, request.getContentType());
+      headers.put("Content-Type", request.getContentType());
     }
     Enumeration iter = request.getParameterNames();
     while (iter.hasMoreElements()) {
