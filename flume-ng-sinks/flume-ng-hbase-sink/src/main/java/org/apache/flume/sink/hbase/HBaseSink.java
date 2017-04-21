@@ -40,10 +40,17 @@ import org.apache.flume.sink.AbstractSink;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HConstants;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.BufferedMutator;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Durability;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Increment;
+import org.apache.hadoop.hbase.client.Mutation;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Row;
+import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +100,8 @@ import java.util.NavigableMap;
 public class HBaseSink extends AbstractSink implements Configurable {
   private String tableName;
   private byte[] columnFamily;
-  private HTable table;
+  private Connection conn;
+  private BufferedMutator table;
   private long batchSize;
   private Configuration config;
   private static final Logger logger = LoggerFactory.getLogger(HBaseSink.class);
@@ -139,18 +147,17 @@ public class HBaseSink extends AbstractSink implements Configurable {
           + "provided credentials.", ex);
     }
     try {
-      table = privilegedExecutor.execute(new PrivilegedExceptionAction<HTable>() {
+      conn = privilegedExecutor.execute(new PrivilegedExceptionAction<Connection>() {
         @Override
-        public HTable run() throws Exception {
-	    // HACK - convert to use buffered mutator.
-	    // HTable table = new HTable(config, tableName);
-	    HTable table = null;
-	    //          table.setAutoFlush(false);
-          // Flush is controlled by us. This ensures that HBase changing
-          // their criteria for flushing does not change how we flush.
-          return table;
+        public Connection run() throws Exception {
+	        conn = ConnectionFactory.createConnection(config);
+          return conn;
         }
       });
+      // Flush is controlled by us. This ensures that HBase changing
+      // their criteria for flushing does not change how we flush.
+      table = conn.getBufferedMutator(TableName.valueOf(tableName));
+
     } catch (Exception e) {
       sinkCounter.incrementConnectionFailedCount();
       logger.error("Could not load table, " + tableName +
@@ -162,7 +169,15 @@ public class HBaseSink extends AbstractSink implements Configurable {
       if (!privilegedExecutor.execute(new PrivilegedExceptionAction<Boolean>() {
         @Override
         public Boolean run() throws IOException {
-          return table.getTableDescriptor().hasFamily(columnFamily);
+          Table t = null;
+          try {
+            t = conn.getTable(TableName.valueOf(tableName));
+            return t.getTableDescriptor().hasFamily(columnFamily);
+          } finally {
+            if (t != null) {
+              t.close();
+            }
+          }
         }
       })) {
         throw new IOException("Table " + tableName
@@ -192,6 +207,14 @@ public class HBaseSink extends AbstractSink implements Configurable {
       table = null;
     } catch (IOException e) {
       throw new FlumeException("Error closing table.", e);
+    }
+    try {
+      if (conn != null) {
+        conn.close();
+      }
+      conn = null;
+    } catch (IOException e) {
+      throw new FlumeException("Error closing connection.", e);
     }
     sinkCounter.incrementConnectionClosedCount();
     sinkCounter.stop();
@@ -377,18 +400,22 @@ public class HBaseSink extends AbstractSink implements Configurable {
     privilegedExecutor.execute(new PrivilegedExceptionAction<Void>() {
       @Override
       public Void run() throws Exception {
+        final List<Mutation> mutations = new ArrayList<Mutation>(actions.size());
         for (Row r : actions) {
           if (r instanceof Put) {
-	      // HACK - use buffered mutator
-	      //((Put) r).setWriteToWAL(enableWal);
+            ((Put) r).setDurability(enableWal ? Durability.USE_DEFAULT : Durability.SKIP_WAL);
           }
           // Newer versions of HBase - Increment implements Row.
           if (r instanceof Increment) {
-	      // HACK - use buffered mutator
-	      // ((Increment) r).setWriteToWAL(enableWal);
+            ((Increment) r).setDurability(enableWal ? Durability.USE_DEFAULT : Durability.SKIP_WAL);
+          }
+          if (r instanceof Mutation) {
+            mutations.add((Mutation)r);
+          } else {
+            logger.warn("dropping row " + r + " since it is not an Increment or Put");
           }
         }
-        //table.batch(actions);
+        table.mutate(mutations);
         return null;
       }
     });
@@ -410,9 +437,8 @@ public class HBaseSink extends AbstractSink implements Configurable {
         }
 
         for (final Increment i : processedIncrements) {
-	    // HACK
-	    // i.setWriteToWAL(enableWal);
-          table.increment(i);
+          i.setDurability(enableWal ? Durability.USE_DEFAULT : Durability.SKIP_WAL);
+          table.mutate(i);
         }
         return null;
       }
