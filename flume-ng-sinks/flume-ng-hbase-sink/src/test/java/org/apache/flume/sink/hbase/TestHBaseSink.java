@@ -38,11 +38,13 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.client.Increment;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.zookeeper.ZKConfig;
 import org.junit.After;
@@ -142,6 +144,7 @@ public class TestHBaseSink {
     Configurables.configure(channel, new Context());
     sink.setChannel(channel);
     sink.start();
+
     Transaction tx = channel.getTransaction();
     tx.begin();
     Event e = EventBuilder.withBody(Bytes.toBytes(valBase));
@@ -151,13 +154,15 @@ public class TestHBaseSink {
 
     sink.process();
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 1);
-    byte[] out = results[0];
-    Assert.assertArrayEquals(e.getBody(), out);
-    out = results[1];
-    Assert.assertArrayEquals(Longs.toByteArray(1), out);
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 1);
+      byte[] out = results[0];
+      Assert.assertArrayEquals(e.getBody(), out);
+      out = results[1];
+      Assert.assertArrayEquals(Longs.toByteArray(1), out);
+    }
   }
 
   @Test
@@ -179,13 +184,15 @@ public class TestHBaseSink {
 
     sink.process();
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 1);
-    byte[] out = results[0];
-    Assert.assertArrayEquals(e.getBody(), out);
-    out = results[1];
-    Assert.assertArrayEquals(Longs.toByteArray(1), out);
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 1);
+      byte[] out = results[0];
+      Assert.assertArrayEquals(e.getBody(), out);
+      out = results[1];
+      Assert.assertArrayEquals(Longs.toByteArray(1), out);
+    }
   }
 
   @Test
@@ -208,22 +215,24 @@ public class TestHBaseSink {
     tx.close();
     sink.process();
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 3);
-    byte[] out;
-    int found = 0;
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
-          found++;
-          break;
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+        Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 3);
+      byte[] out;
+      int found = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
+            found++;
+            break;
+          }
         }
       }
+      Assert.assertEquals(3, found);
+      out = results[3];
+      Assert.assertArrayEquals(Longs.toByteArray(3), out);
     }
-    Assert.assertEquals(3, found);
-    out = results[3];
-    Assert.assertArrayEquals(Longs.toByteArray(3), out);
   }
 
   @Test
@@ -252,22 +261,24 @@ public class TestHBaseSink {
     }
     sink.stop();
     Assert.assertEquals(2, count);
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 3);
-    byte[] out;
-    int found = 0;
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
-          found++;
-          break;
+
+    try (Connection connection = ConnectionFactory.createConnection(conf)) {
+      Table table = connection.getTable(TableName.valueOf(tableName));
+      byte[][] results = getResults(table, 3);
+      byte[] out;
+      int found = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
+            found++;
+            break;
+          }
         }
       }
+      Assert.assertEquals(3, found);
+      out = results[3];
+      Assert.assertArrayEquals(Longs.toByteArray(3), out);
     }
-    Assert.assertEquals(3, found);
-    out = results[3];
-    Assert.assertArrayEquals(Longs.toByteArray(3), out);
   }
 
   @Test(expected = FlumeException.class)
@@ -315,24 +326,6 @@ public class TestHBaseSink {
 
     // FIXME: The test should never get here, the below code doesn't run.
     Assert.fail();
-
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 2);
-    byte[] out;
-    int found = 0;
-    for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 2; j++) {
-        if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
-          found++;
-          break;
-        }
-      }
-    }
-    Assert.assertEquals(2, found);
-    out = results[2];
-    Assert.assertArrayEquals(Longs.toByteArray(2), out);
-    sink.process();
   }
 
   // TODO: Move this test to a different class and run it stand-alone.
@@ -368,22 +361,23 @@ public class TestHBaseSink {
     tx.commit();
     tx.close();
     sink.process();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 2);
-    byte[] out;
-    int found = 0;
-    for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 2; j++) {
-        if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
-          found++;
-          break;
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 2);
+      byte[] out;
+      int found = 0;
+      for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+          if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
+            found++;
+            break;
+          }
         }
       }
+      Assert.assertEquals(2, found);
+      out = results[2];
+      Assert.assertArrayEquals(Longs.toByteArray(2), out);
     }
-    Assert.assertEquals(2, found);
-    out = results[2];
-    Assert.assertArrayEquals(Longs.toByteArray(2), out);
     testUtility.shutdownMiniCluster();
     sink.process();
     sink.stop();
@@ -400,13 +394,13 @@ public class TestHBaseSink {
    * @return
    * @throws IOException
    */
-  private byte[][] getResults(HTable table, int numEvents) throws IOException {
+  private byte[][] getResults(Table table, int numEvents) throws IOException {
     byte[][] results = new byte[numEvents + 1][];
     Scan scan = new Scan();
     scan.addColumn(columnFamily.getBytes(), plCol.getBytes());
-    scan.setStartRow(Bytes.toBytes("default"));
+    scan.withStartRow(Bytes.toBytes("default"));
     ResultScanner rs = table.getScanner(scan);
-    byte[] out = null;
+    byte[] out;
     int i = 0;
     try {
       for (Result r = rs.next(); r != null; r = rs.next()) {
@@ -427,7 +421,7 @@ public class TestHBaseSink {
     Assert.assertEquals(i, results.length - 1);
     scan = new Scan();
     scan.addColumn(columnFamily.getBytes(), inColumn.getBytes());
-    scan.setStartRow(Bytes.toBytes("incRow"));
+    scan.withStartRow(Bytes.toBytes("incRow"));
     rs = table.getScanner(scan);
     out = null;
     try {
@@ -470,13 +464,15 @@ public class TestHBaseSink {
     doReturn(e).when(channel).take();
     sink.process();
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 1);
-    byte[] out = results[0];
-    Assert.assertArrayEquals(e.getBody(), out);
-    out = results[1];
-    Assert.assertArrayEquals(Longs.toByteArray(1), out);
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 1);
+      byte[] out = results[0];
+      Assert.assertArrayEquals(e.getBody(), out);
+      out = results[1];
+      Assert.assertArrayEquals(Longs.toByteArray(1), out);
+    }
   }
 
   @Test
@@ -510,13 +506,15 @@ public class TestHBaseSink {
     MockSimpleHbaseEventSerializer.throwException = false;
     sink.process();
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 1);
-    byte[] out = results[0];
-    Assert.assertArrayEquals(e.getBody(), out);
-    out = results[1];
-    Assert.assertArrayEquals(Longs.toByteArray(1), out);
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 1);
+      byte[] out = results[0];
+      Assert.assertArrayEquals(e.getBody(), out);
+      out = results[1];
+      Assert.assertArrayEquals(Longs.toByteArray(1), out);
+    }
   }
 
   @Test
@@ -550,22 +548,24 @@ public class TestHBaseSink {
       status = sink.process();
     }
     sink.stop();
-    // HACK // HTable table = new HTable(conf, tableName);
-    HTable table = null;
-    byte[][] results = getResults(table, 3);
-    byte[] out;
-    int found = 0;
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
-          found++;
-          break;
+
+    try (Connection connection = ConnectionFactory.createConnection(conf);
+         Table table = connection.getTable(TableName.valueOf(tableName))) {
+      byte[][] results = getResults(table, 3);
+      byte[] out;
+      int found = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          if (Arrays.equals(results[j], Bytes.toBytes(valBase + "-" + i))) {
+            found++;
+            break;
+          }
         }
       }
+      Assert.assertEquals(3, found);
+      out = results[3];
+      Assert.assertArrayEquals(Longs.toByteArray(3), out);
     }
-    Assert.assertEquals(3, found);
-    out = results[3];
-    Assert.assertArrayEquals(Longs.toByteArray(3), out);
   }
 
   @Test
