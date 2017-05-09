@@ -91,9 +91,10 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
   @BeforeClass
   public static void beforeClass() throws Exception {
     initCore(
-        RESOURCES_DIR + "/solr/collection1/conf/solrconfig.xml", 
-        RESOURCES_DIR + "/solr/collection1/conf/schema.xml",
-        RESOURCES_DIR + "/solr");
+        "solrconfig.xml",
+        "schema.xml",
+        RESOURCES_DIR + "/solr"
+        );
   }
 
   @Before
@@ -121,7 +122,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
       //solrServer = new HttpSolrServer(EXTERNAL_SOLR_SERVER_URL);
     } else {
       if (TEST_WITH_EMBEDDED_SOLR_SERVER) {
-        solrServer = new TestEmbeddedSolrServer(h.getCoreContainer(), "");
+        solrServer = new TestEmbeddedSolrServer(h.getCoreContainer(), "collection1");
       } else {
         throw new RuntimeException("Not yet implemented");
         //solrServer = new TestSolrServer(getSolrServer());
