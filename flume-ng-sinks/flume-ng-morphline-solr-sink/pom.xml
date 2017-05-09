@@ -49,7 +49,7 @@ limitations under the License.
 
     <dependency>
       <groupId>org.kitesdk</groupId>
-      <artifactId>kite-morphlines-all-except-tika</artifactId>
+      <artifactId>kite-morphlines-all-except-solrcell</artifactId>
       <version>${kite.version}</version>
       <exclusions>
         <exclusion>
@@ -97,6 +97,16 @@ limitations under the License.
 
   </dependencies>
 
+  <dependencyManagement>
+    <dependencies>    
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.5</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <build>
     <plugins>
 
@@ -105,7 +115,7 @@ limitations under the License.
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
         <configuration>
-          <argLine>-Dtests.locale=en_us</argLine>
+          <argLine>-Dtests.locale=en-US</argLine>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
           <systemPropertyVariables>
             <!--<solr.expected.version>${solr.expected.version}</solr.expected.version>-->
