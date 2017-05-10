@@ -56,6 +56,7 @@ import com.sun.management.UnixOperatingSystemMXBean;
 
 import org.junit.After;
 
+@Ignore
 public class TestAsyncHBaseSink {
   private static HBaseTestingUtility testUtility = new HBaseTestingUtility();
 
