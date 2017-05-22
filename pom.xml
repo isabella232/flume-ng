@@ -1662,6 +1662,12 @@ limitations under the License.
         <groupId>org.kitesdk</groupId>
         <artifactId>kite-data-core</artifactId>
         <version>${kite.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.kitesdk</groupId>
