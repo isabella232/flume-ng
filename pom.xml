@@ -1616,6 +1616,12 @@ limitations under the License.
       </dependency>
 
       <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-all</artifactId>
+        <version>4.1.1.Final</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.apache.solr</groupId>
         <artifactId>solr-cell</artifactId>
         <version>${solr-global.version}</version>
