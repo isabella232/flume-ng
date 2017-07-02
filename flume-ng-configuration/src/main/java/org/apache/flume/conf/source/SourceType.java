@@ -112,7 +112,14 @@ public enum SourceType implements ComponentWithClassName {
    *
    * @see org.apache.flume.source.taildir.TaildirSource
    */
-  TAILDIR("org.apache.flume.source.taildir.TaildirSource")
+  TAILDIR("org.apache.flume.source.taildir.TaildirSource"),
+
+  /**
+   * Netcat UDP Source
+   *
+   * @see org.apache.flume.source.NetcatUdpSource
+   */
+  NETCATUDP("org.apache.flume.source.NetcatUdpSource")
   ;
 
   private final String sourceClassName;
