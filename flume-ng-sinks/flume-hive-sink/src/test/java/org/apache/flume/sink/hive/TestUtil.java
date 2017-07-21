@@ -58,6 +58,8 @@ public class TestUtil {
     conf.setVar(HiveConf.ConfVars.HIVE_TXN_MANAGER, txnMgr);
     conf.setBoolVar(HiveConf.ConfVars.HIVE_SUPPORT_CONCURRENCY, true);
     conf.set("fs.raw.impl", RawFileSystem.class.getName());
+    conf.setBoolVar(HiveConf.ConfVars.METASTORE_SCHEMA_VERIFICATION, false);
+    conf.set("datanucleus.schema.autoCreateTables", Boolean.toString(true));
   }
 
   public static void createDbAndTable(Driver driver, String databaseName,
@@ -77,8 +79,7 @@ public class TestUtil {
             " into 10 buckets " +
             " stored as orc " +
             " location '" + tableLoc +  "'" +
-            " TBLPROPERTIES ('transactional'='true')";
-
+            " TBLPROPERTIES  (\"transactional\"=\"true\")";
     runDDL(driver, crtTbl);
     System.out.println("crtTbl = " + crtTbl);
     if (partNames != null && partNames.length != 0) {
