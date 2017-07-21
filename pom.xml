@@ -76,7 +76,7 @@ limitations under the License.
     <jetty.version>6.1.26.cloudera.4</jetty.version>
     <joda-time.version>2.1</joda-time.version>
     <junit.version>4.10</junit.version>
-    <kafka.version>${cdh.kafka.version}</kafka.version>
+    <kafka.version>0.10.2-kafka-2.2.0</kafka.version>
     <kite.version>${cdh.kite.version}</kite.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <log4j-extras.version>1.1</log4j-extras.version>
