@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # CLOUDERA-BUILD
-export JAVA7_BUILD=true
+export JAVA8_BUILD=true
 . /opt/toolchain/toolchain.sh
 
 echo "Versions used for the build:"
