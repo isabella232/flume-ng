@@ -3,6 +3,7 @@
 export JAVA8_BUILD=true
 . /opt/toolchain/toolchain.sh
 
+export JAVA_HOME=$JAVA_1_8_HOME
 echo "Versions used for the build:"
 java -version
 mvn -version
