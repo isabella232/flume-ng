@@ -62,6 +62,7 @@ public class KafkaSourceEmbeddedKafka {
     props.put("host.name", "localhost");
     props.put("port", String.valueOf(serverPort));
     props.put("log.dir", dir.getAbsolutePath());
+    props.put("offsets.topic.replication.factor", "1");
     if (properties != null) {
       props.putAll(properties);
     }
