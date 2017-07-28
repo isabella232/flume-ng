@@ -416,6 +416,7 @@ public class HBaseSink extends AbstractSink implements Configurable {
           }
         }
         table.mutate(mutations);
+        table.flush();
         return null;
       }
     });
@@ -440,6 +441,7 @@ public class HBaseSink extends AbstractSink implements Configurable {
           i.setDurability(enableWal ? Durability.USE_DEFAULT : Durability.SKIP_WAL);
           table.mutate(i);
         }
+        table.flush();
         return null;
       }
     });
