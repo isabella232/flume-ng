@@ -97,8 +97,9 @@ limitations under the License.
     <mvn-project-info-reports-plugin.version>2.4</mvn-project-info-reports-plugin.version>
     <mvn-site-plugin.version>3.3</mvn-site-plugin.version>
     <mvn-sphinx-plugin>1.0.2</mvn-sphinx-plugin>
-    <netty.version>${cdh.io.netty.version}</netty.version>
     <mvn-surefire-plugin.version>2.20.1</mvn-surefire-plugin.version>
+    <netty.version>${cdh.io.netty.version}</netty.version>
+    <netty-all.version>4.1.17.Final</netty-all.version>
     <protobuf.version>2.5.0</protobuf.version>
     <rat.version>0.11</rat.version>
     <snappy-java.version>${cdh.hadoop-snappy.version}</snappy-java.version>
@@ -1618,7 +1619,7 @@ limitations under the License.
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-all</artifactId>
-        <version>4.1.1.Final</version>
+        <version>${netty-all.version}</version>
       </dependency>
 
       <dependency>
