@@ -15,19 +15,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <groupId>org.apache</groupId>
-    <artifactId>apache</artifactId>
-    <version>18</version>
+    <groupId>com.cloudera.cdh</groupId>
+    <artifactId>cdh-root</artifactId>
+    <version>5.14.0-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.flume</groupId>
   <artifactId>flume-parent</artifactId>
-  <version>1.8.0-SNAPSHOT</version>
+  <version>1.7.0-cdh5.14.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Apache Flume</name>
@@ -35,10 +34,11 @@ limitations under the License.
   <properties>
     <!-- Set default encoding to UTF-8 to remove maven complaints -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javaVersion>1.7</javaVersion>
 
     <!-- Java compiler configuration -->
-    <sourceJavaVersion>1.8</sourceJavaVersion>
-    <targetJavaVersion>1.8</targetJavaVersion>
+    <sourceJavaVersion>1.7</sourceJavaVersion>
+    <targetJavaVersion>1.7</targetJavaVersion>
 
     <!-- defaults for flaky test and focused test exclusions -->
     <test.exclude.pattern>$</test.exclude.pattern> <!-- junk pattern -->
@@ -48,38 +48,37 @@ limitations under the License.
 
     <activemq.version>5.7.0</activemq.version>
     <asynchbase.version>1.7.0</asynchbase.version>
-    <avro.version>1.7.4</avro.version>
+    <avro.version>${cdh.avro.version}</avro.version>
     <bundle-plugin.version>2.3.7</bundle-plugin.version>
     <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
     <checkstyle.tool.version>6.19</checkstyle.tool.version>
-    <codehaus.jackson.version>1.9.3</codehaus.jackson.version>
+    <codehaus.jackson.version>${cdh.jackson.version}</codehaus.jackson.version>
     <commons-cli.version>1.2</commons-cli.version>
     <commons-codec.version>1.8</commons-codec.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-compress.version>1.4.1</commons-compress.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
-    <commons-io.version>2.1</commons-io.version>
-    <commons-lang.version>2.5</commons-lang.version>
+    <commons-io.version>2.4</commons-io.version>
+    <commons-lang.version>2.6</commons-lang.version>
     <curator.version>2.6.0</curator.version>
     <derby.version>10.11.1.1</derby.version>
     <elasticsearch.version>0.90.1</elasticsearch.version>
     <fasterxml.jackson.version>2.8.9</fasterxml.jackson.version>
     <fest-reflect.version>1.4</fest-reflect.version>
-    <gson.version>2.2.2</gson.version>
-    <guava.version>18.0</guava.version>
+    <gson.version>2.2.4</gson.version>
     <guava-old.version>11.0.2</guava-old.version>
-    <hadoop2.version>2.4.0</hadoop2.version>
+    <hadoop2.version>${cdh.hadoop.version}</hadoop2.version>
+    <hive.version>${cdh.hive.version}</hive.version>
     <httpclient.version>4.3.5</httpclient.version>
     <httpclient-old.version>4.2.1</httpclient-old.version>
     <irclib.version>1.10</irclib.version>
     <javax-jms.version>1.1-rev-1</javax-jms.version>
     <jersey.version>1.8</jersey.version>
-    <jetty.version>6.1.26</jetty.version>
+    <jetty.version>6.1.26.cloudera.4</jetty.version>
     <joda-time.version>2.9.9</joda-time.version>
     <junit.version>4.10</junit.version>
-    <kafka.version>0.9.0.1</kafka.version>
-    <kite.version>1.0.0</kite.version>
-    <hive.version>1.0.0</hive.version>
+    <kafka.version>${cdh.kafka.version}</kafka.version>
+    <kite.version>${cdh.kite.version}</kite.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <log4j-extras.version>1.1</log4j-extras.version>
     <log4j-log4j.version>1.2.17</log4j-log4j.version>
@@ -103,11 +102,11 @@ limitations under the License.
     <netty.version>3.9.4.Final</netty.version>
     <protobuf.version>2.5.0</protobuf.version>
     <rat.version>0.11</rat.version>
-    <snappy-java.version>1.1.4</snappy-java.version>
-    <solr-global.version>4.3.0</solr-global.version>
-    <slf4j.version>1.6.1</slf4j.version>
+    <snappy-java.version>${cdh.hadoop-snappy.version}</snappy-java.version>
+    <solr-global.version>${cdh.solr.version}</solr-global.version>
+    <slf4j.version>${cdh.slf4j.version}</slf4j.version>
     <system-rules.version>1.16.0</system-rules.version>
-    <thrift.version>0.9.3</thrift.version>
+    <thrift.version>${cdh.thrift.version}</thrift.version>
     <twitter4j.version>3.0.3</twitter4j.version>
     <xalan.version>2.7.2</xalan.version>
     <xerces.version>2.9.1</xerces.version>
@@ -156,6 +155,12 @@ limitations under the License.
             <groupId>org.apache.hadoop</groupId>
             <artifactId>${hadoop.common.artifact.id}</artifactId>
             <version>${hadoop.version}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>com.cloudera.cdh</groupId>
+                <artifactId>hadoop-ant</artifactId>
+              </exclusion>
+            </exclusions>
           </dependency>
           <dependency>
             <groupId>org.apache.hadoop</groupId>
@@ -180,6 +185,12 @@ limitations under the License.
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
             <scope>test</scope>
+            <exclusions>
+              <exclusion>
+                <groupId>io.netty</groupId>
+                <artifactId>netty</artifactId>
+              </exclusion>
+            </exclusions>
           </dependency>
         </dependencies>
       </dependencyManagement>
@@ -194,9 +205,11 @@ limitations under the License.
         </property>
       </activation>
       <properties>
-        <hadoop.version>${hadoop2.version}</hadoop.version>
-        <hbase.version>0.94.2</hbase.version>
+        <hadoop.version>${cdh.hadoop.version}</hadoop.version>
+        <hbase.version>${cdh.hbase.version}</hbase.version>
         <hadoop.common.artifact.id>hadoop-common</hadoop.common.artifact.id>
+        <thrift.version>${cdh.thrift.version}</thrift.version>
+        <kite.version>${cdh.kite.version}</kite.version>
       </properties>
       <dependencyManagement>
         <dependencies>
@@ -275,6 +288,12 @@ limitations under the License.
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
             <scope>test</scope>
+            <exclusions>
+              <exclusion>
+                <groupId>io.netty</groupId>
+                <artifactId>netty</artifactId>
+              </exclusion>
+            </exclusions>
           </dependency>
 
           <!-- only compatible with hadoop-2 -->
@@ -283,21 +302,40 @@ limitations under the License.
             <artifactId>flume-dataset-sink</artifactId>
             <version>${project.version}</version>
           </dependency>
+
+          <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-hadoop-compat</artifactId>
+            <version>${cdh.hbase.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-hadoop2-compat</artifactId>
+            <version>${cdh.hbase.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+          </dependency>
+
         </dependencies>
       </dependencyManagement>
     </profile>
 
     <profile>
-      <id>hbase-1</id>
+      <id>hbase-98</id>
       <activation>
         <property>
           <name>!flume.hadoop.profile</name>
         </property>
       </activation>
       <properties>
-        <hadoop.version>${hadoop2.version}</hadoop.version>
-        <hbase.version>1.0.0</hbase.version>
+        <hadoop.version>${cdh.hadoop.version}</hadoop.version>
+        <hbase.version>${cdh.hbase.version}</hbase.version>
         <hadoop.common.artifact.id>hadoop-common</hadoop.common.artifact.id>
+        <thrift.version>${cdh.thrift.version}</thrift.version>
+        <kite.version>${cdh.kite.version}</kite.version>
       </properties>
       <dependencyManagement>
         <dependencies>
@@ -435,6 +473,18 @@ limitations under the License.
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
             <scope>test</scope>
+            <exclusions>
+              <exclusion>
+                <groupId>io.netty</groupId>
+                <artifactId>netty</artifactId>
+              </exclusion>
+            </exclusions>
+          </dependency>
+
+          <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-flume-sink_2.10</artifactId>
+            <version>${cdh.spark.version}</version>
           </dependency>
 
           <!-- only compatible with hadoop-2 -->
@@ -734,12 +784,38 @@ limitations under the License.
     <url>http://www.apache.org</url>
   </organization>
 
+  <repositories>
+     <repository>
+      <id>cdh.repo</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+      <name>Cloudera Repositories</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <repository>
+      <id>cdh.snapshots.repo</id>
+      <url>https://repository.cloudera.com/artifactory/libs-snapshot-local</url>
+      <name>Cloudera Snapshots Repository</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+
+  </repositories>
+
   <distributionManagement>
+    <!--
     <repository>
       <id>apache.staging.https</id>
       <name>Apache Staging Repository</name>
       <url>https://repository.apache.org/service/local/staging/deploy/maven2/</url>
     </repository>
+    -->
     <site>
       <id>apache.website</id>
       <url>${siteUrlDeployment}</url>
@@ -756,6 +832,44 @@ limitations under the License.
         <artifactId>apache-rat-plugin</artifactId>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <rules>
+            <requireMavenVersion>
+              <version>[3.0.0,)</version>
+            </requireMavenVersion>
+            <requireJavaVersion>
+              <version>[${javaVersion}.0,${javaVersion}.1000}]</version>
+            </requireJavaVersion>
+          </rules>
+        </configuration>
+        <executions>
+          <execution>
+            <id>clean</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>pre-clean</phase>
+          </execution>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+          <execution>
+            <id>site</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <phase>pre-site</phase>
+          </execution>
+        </executions>
+      </plugin>
       <!-- Run checkstyle as part of the "verify" phase. See
            https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/multi-module-config.html
            for how to configure plugin for a multi-module project. -->
@@ -826,6 +940,10 @@ limitations under the License.
             <excludes>
               <exclude>**/*$*</exclude>
               <exclude>${test.exclude.pattern}</exclude>
+              <!-- CDH-45148 Fix flaky tests in org.apache.flume.source.thriftLegacy.TestThriftLegacySource -->
+              <exclude>**/TestThriftLegacySource.java</exclude>
+              <!-- CDH-51264 Fix flaky test org.apache.flume.channel.file.TestFileChannelRestart.testCompressBackup -->
+              <exclude>**/TestFileChannelRestart.java</exclude>
             </excludes>
           </configuration>
         </plugin>
@@ -853,6 +971,10 @@ limitations under the License.
                   <exclude>.repository/</exclude>
                   <exclude>**/*.diff</exclude>
                   <exclude>**/*.patch</exclude>
+                  <exclude>cloudera/*</exclude>
+                  <exclude>PATCH.txt</exclude>
+                  <!-- Exclude buildinfo files from RAT, since they're only used for CDH unit test aggregation. -->
+                  <exclude>*buildinfo</exclude>
                   <exclude>**/*.avsc</exclude>
                   <exclude>**/*.avro</exclude>
                   <exclude>**/docs/**</exclude>
@@ -926,11 +1048,17 @@ limitations under the License.
             </filesets>
           </configuration>
         </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>${bundle-plugin.version}</version>
-      </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+          <version>${bundle-plugin.version}</version>
+        </plugin>
       </plugins>
 
     </pluginManagement>
@@ -1437,7 +1565,7 @@ limitations under the License.
       <dependency>
         <groupId>com.sun.jersey</groupId>
         <artifactId>jersey-core</artifactId>
-        <version>${jersey.version}</version>
+        <version>1.8</version>
       </dependency>
 
       <dependency>
@@ -1464,6 +1592,10 @@ limitations under the License.
           <exclusion>
             <groupId>org.jboss.netty</groupId>
             <artifactId>netty</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

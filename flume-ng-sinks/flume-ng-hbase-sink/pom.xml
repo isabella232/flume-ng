@@ -15,7 +15,7 @@
   <parent>
     <artifactId>flume-ng-sinks</artifactId>
     <groupId>org.apache.flume</groupId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.7.0-cdh5.14.0-SNAPSHOT</version>
   </parent>
   <groupId>org.apache.flume.flume-ng-sinks</groupId>
   <artifactId>flume-ng-hbase-sink</artifactId>
@@ -106,7 +106,6 @@
       <groupId>org.apache.flume.flume-ng-sinks</groupId>
       <artifactId>flume-hdfs-sink</artifactId>
     </dependency>
-
   </dependencies>
 
   <profiles>
@@ -186,7 +185,7 @@
       </dependencies>
     </profile>
     <profile>
-      <id>hbase-1</id>
+      <id>hbase-98</id>
       <activation>
         <property>
           <name>!flume.hadoop.profile</name>

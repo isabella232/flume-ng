@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -483,11 +482,14 @@ public class TestAvroSource {
         false, false);
 
     // Private lambda expression to check the received FlumeException within this test
-    Consumer<Exception> exceptionChecker = (Exception ex) -> {
-      logger.info("Received an expected exception", ex);
-      //covers all ipFilter related exceptions
-      Assert.assertTrue("Expected an ipFilterRules related exception",
-          ex.getMessage().contains("ipFilter"));
+    Consumer<Exception> exceptionChecker = new Consumer<Exception>() {
+      @Override
+      public void accept(Exception ex) {
+        logger.info("Received an expected exception", ex);
+        //covers all ipFilter related exceptions
+        Assert.assertTrue("Expected an ipFilterRules related exception",
+            ex.getMessage().contains("ipFilter"));
+      }
     };
 
     try {
@@ -613,5 +615,9 @@ public class TestAvroSource {
         LifecycleController.waitForOneOf(source, LifecycleState.STOP_OR_ERROR));
     Assert.assertEquals("Server is stopped", LifecycleState.STOP,
         source.getLifecycleState());
+  }
+
+  private interface Consumer<T> {
+     void accept(T object);
   }
 }

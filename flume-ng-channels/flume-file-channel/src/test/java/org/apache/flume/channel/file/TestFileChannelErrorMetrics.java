@@ -236,7 +236,7 @@ public class TestFileChannelErrorMetrics extends TestFileChannelBase {
   @Test
   public void testCheckpointBackupWriteErrorShouldIncreaseCounter()
       throws IOException, InterruptedException {
-    FileChannelCounter fileChannelCounter = new FileChannelCounter("test");
+    final FileChannelCounter fileChannelCounter = new FileChannelCounter("test");
     File checkpointFile = File.createTempFile("checkpoint", ".tmp");
     File backupDir = Files.createTempDirectory("checkpoint").toFile();
     backupDir.deleteOnExit();
