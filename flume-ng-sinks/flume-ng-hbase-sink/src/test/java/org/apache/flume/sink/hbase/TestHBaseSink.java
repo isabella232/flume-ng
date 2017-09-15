@@ -332,7 +332,6 @@ public class TestHBaseSink {
 
   /**
    * This test must run last - it shuts down the minicluster :D
-   *
    * @throws Exception
    */
   @Ignore("For dev builds only:" +
@@ -388,7 +387,6 @@ public class TestHBaseSink {
    * in the table given. Expensive, so tread lightly.
    * Calling this function multiple times for the same result set is a bad
    * idea. Cache the result set once it is returned by this function.
-   *
    * @param table
    * @param numEvents Number of events inserted into the table
    * @return

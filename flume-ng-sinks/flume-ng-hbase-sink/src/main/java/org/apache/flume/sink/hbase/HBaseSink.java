@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.PrivilegedExceptionAction;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -223,10 +224,6 @@ public class HBaseSink extends AbstractSink implements Configurable {
   @SuppressWarnings("unchecked")
   @Override
   public void configure(Context context) {
-    if (!HBaseVersionCheck.hasVersionLessThan2(logger)) {
-      throw new ConfigurationException(
-          "HBase major version number must be less than 2 for hbase-sink.");
-    }
     tableName = context.getString(HBaseSinkConfigurationConstants.CONFIG_TABLE);
     String cf = context.getString(
         HBaseSinkConfigurationConstants.CONFIG_COLUMN_FAMILY);

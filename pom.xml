@@ -73,7 +73,6 @@ limitations under the License.
     <hadoop2.version>${cdh.hadoop.version}</hadoop2.version>
     <hive.version>${cdh.hive.version}</hive.version>
     <httpclient.version>4.3.5</httpclient.version>
-    <httpclient-old.version>4.2.1</httpclient-old.version>
     <irclib.version>1.10</irclib.version>
     <javax-jms.version>1.1-rev-1</javax-jms.version>
     <jersey.version>1.8</jersey.version>
@@ -99,9 +98,7 @@ limitations under the License.
     <mvn-project-info-reports-plugin.version>2.4</mvn-project-info-reports-plugin.version>
     <mvn-site-plugin.version>3.3</mvn-site-plugin.version>
     <mvn-sphinx-plugin>1.0.2</mvn-sphinx-plugin>
-    <mvn-surefire-plugin.version>2.14.1</mvn-surefire-plugin.version>
-    <mvn-surefire-plugin-old.version>2.12.3</mvn-surefire-plugin-old.version>
-    <mvn-surefire-plugin-old-morphline.version>2.12.4</mvn-surefire-plugin-old-morphline.version>
+    <mvn-surefire-plugin.version>2.20</mvn-surefire-plugin.version>
     <netty.version>3.9.4.Final</netty.version>
     <protobuf.version>2.5.0</protobuf.version>
     <rat.version>0.11</rat.version>
@@ -115,6 +112,7 @@ limitations under the License.
     <xerces.version>2.9.1</xerces.version>
     <wiremock.version>1.53</wiremock.version>
     <zookeeper.version>3.4.5</zookeeper.version>
+    <scala-library.version>2.11.11</scala-library.version>
   </properties>
 
   <modules>
@@ -932,7 +930,7 @@ limitations under the License.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${mvn-surefire-plugin-old.version}</version>
+          <version>${mvn-surefire-plugin.version}</version>
           <configuration>
             <forkMode>always</forkMode>
             <forkedProcessTimeoutInSeconds>900</forkedProcessTimeoutInSeconds>
@@ -1221,7 +1219,7 @@ limitations under the License.
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
         <artifactId>httpclient</artifactId>
-        <version>${httpclient-old.version}</version>
+        <version>${httpclient.version}</version>
       </dependency>
 
       <dependency>
@@ -1645,6 +1643,11 @@ limitations under the License.
       </dependency>
 
       <!-- Dependencies of Kafka source -->
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala-library.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka_${scala.binary.version}</artifactId>
