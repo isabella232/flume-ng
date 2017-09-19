@@ -72,7 +72,7 @@ limitations under the License.
     <guava-old.version>11.0.2</guava-old.version>
     <hadoop2.version>${cdh.hadoop.version}</hadoop2.version>
     <hive.version>${cdh.hive.version}</hive.version>
-    <httpclient.version>4.3.5</httpclient.version>
+    <httpclient.version>${cdh.httpcomponents.version}</httpclient.version>
     <irclib.version>1.10</irclib.version>
     <javax-jms.version>1.1-rev-1</javax-jms.version>
     <jersey.version>1.8</jersey.version>
