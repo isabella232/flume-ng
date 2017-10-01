@@ -381,6 +381,10 @@ limitations under the License.
       <artifactId>mina-core</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+    </dependency>
   </dependencies>
 
 </project>
