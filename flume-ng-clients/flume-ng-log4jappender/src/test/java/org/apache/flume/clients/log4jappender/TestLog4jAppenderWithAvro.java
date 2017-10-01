@@ -18,13 +18,12 @@
  */
 package org.apache.flume.clients.log4jappender;
 
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.URL;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +59,7 @@ public class TestLog4jAppenderWithAvro {
   private AvroSource source;
   private Channel ch;
   private Properties props;
+  private File file;
   private int port;
 
   private static int getFreePort() throws Exception {
@@ -70,11 +70,11 @@ public class TestLog4jAppenderWithAvro {
 
   @Before
   public void setUp() throws Exception {
-    URL schemaUrl = getClass().getClassLoader().getResource("myrecord.avsc");
-    Files.copy(Resources.newInputStreamSupplier(schemaUrl),
-        new File("/tmp/myrecord.avsc"));
-
+    InputStream schemaUrl = getClass().getClassLoader().getResource("myrecord.avsc").openStream();
+    file = new File("/tmp/myrecord.avsc");
+    Files.copy(schemaUrl, file.toPath());
     port = getFreePort();
+
     source = new AvroSource();
     ch = new MemoryChannel();
     Configurables.configure(ch, new Context());
@@ -255,6 +255,7 @@ public class TestLog4jAppenderWithAvro {
 
   @After
   public void cleanUp() {
+    file.delete();
     source.stop();
     ch.stop();
     props.clear();
