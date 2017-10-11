@@ -81,25 +81,11 @@ public enum SinkType {
   ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSink"),
 
   /**
-   * HBase sink
-   *
-   * @see org.apache.flume.sink.hbase.HBaseSink
-   */
-  HBASE("org.apache.flume.sink.hbase.HBaseSink"),
-
-  /**
    * HBase2 sink
    *
    * @see org.apache.flume.sink.hbase2.HBase2Sink
    */
   HBASE2("org.apache.flume.sink.hbase2.HBase2Sink"),
-
-  /**
-   * AsyncHBase sink
-   *
-   * @see org.apache.flume.sink.hbase.AsyncHBaseSink
-   */
-  ASYNCHBASE("org.apache.flume.sink.hbase.AsyncHBaseSink"),
 
   /**
    * MorphlineSolr sink

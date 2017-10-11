@@ -49,7 +49,6 @@ limitations under the License.
     <stagingDirectory>${project.basedir}/target/docs</stagingDirectory>
 
     <activemq.version>5.7.0</activemq.version>
-    <asynchbase.version>1.7.0</asynchbase.version>
     <avro.version>${cdh.avro.version}</avro.version>
     <bundle-plugin.version>2.3.7</bundle-plugin.version>
     <checkstyle.plugin.version>2.17</checkstyle.plugin.version>
@@ -1475,12 +1474,6 @@ limitations under the License.
 
       <dependency>
         <groupId>org.apache.flume.flume-ng-sinks</groupId>
-        <artifactId>flume-ng-hbase-sink</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.flume.flume-ng-sinks</groupId>
         <artifactId>flume-ng-hbase2-sink</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -1600,26 +1593,6 @@ limitations under the License.
         <groupId>org.apache.mina</groupId>
         <artifactId>mina-core</artifactId>
         <version>${mina.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hbase</groupId>
-        <artifactId>asynchbase</artifactId>
-        <version>${asynchbase.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

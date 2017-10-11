@@ -130,21 +130,7 @@ public class SinkConfiguration extends ComponentConfiguration {
     /**
      * HBase Sink
      *
-     * @see org.apache.flume.sink.hbase.HBaseSink
-     */
-    HBASE("org.apache.flume.sink.hbase.HBaseSinkConfiguration"),
-
-    /**
-     * AsyncHBase Sink
-     *
-     * @see org.apache.flume.sink.hbase.AsyncHBaseSink
-     */
-    ASYNCHBASE("org.apache.flume.sink.hbase.HBaseSinkConfiguration"),
-
-    /**
-     * HBase Sink
-     *
-     * @see org.apache.flume.sink.hbase.HBaseSink
+     * @see org.apache.flume.sink.hbase2.HBase2Sink
      */
     HBASE2("org.apache.flume.sink.hbase2.HBaseSinkConfiguration"),
 
