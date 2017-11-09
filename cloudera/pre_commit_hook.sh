@@ -11,4 +11,4 @@ mvn -version
 
 echo "Running maven test"
 export MAVEN_OPTS="-Xms512m -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m"
-mvn -s mvn_settings.xml --update-snapshots clean test -B
+mvn -s mvn_settings.xml --update-snapshots -Dsurefire.rerunFailingTestsCount=5 clean test -B
