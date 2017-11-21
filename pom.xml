@@ -97,8 +97,8 @@ limitations under the License.
     <mvn-project-info-reports-plugin.version>2.4</mvn-project-info-reports-plugin.version>
     <mvn-site-plugin.version>3.3</mvn-site-plugin.version>
     <mvn-sphinx-plugin>1.0.2</mvn-sphinx-plugin>
-    <mvn-surefire-plugin.version>2.20</mvn-surefire-plugin.version>
     <netty.version>${cdh.io.netty.version}</netty.version>
+    <mvn-surefire-plugin.version>2.20.1</mvn-surefire-plugin.version>
     <protobuf.version>2.5.0</protobuf.version>
     <rat.version>0.11</rat.version>
     <snappy-java.version>${cdh.hadoop-snappy.version}</snappy-java.version>
@@ -934,7 +934,9 @@ limitations under the License.
               <systemPropertyVariables>
                 <org.apache.hadoop.hbase.shaded.io.netty.packagePrefix>org.apache.hadoop.hbase.shaded.</org.apache.hadoop.hbase.shaded.io.netty.packagePrefix>
               </systemPropertyVariables>
-            <forkMode>always</forkMode>
+            <reuseForks>false</reuseForks>
+            <forkCount>1</forkCount>
+            <rerunFailingTestsCount>10</rerunFailingTestsCount>
             <forkedProcessTimeoutInSeconds>900</forkedProcessTimeoutInSeconds>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
             <includes>

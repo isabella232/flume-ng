@@ -119,9 +119,6 @@ limitations under the License.
         <configuration>
           <argLine>-Dtests.locale=en-US</argLine>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <systemPropertyVariables>
-            <!--<solr.expected.version>${solr.expected.version}</solr.expected.version>-->
-          </systemPropertyVariables>
         </configuration>
       </plugin>
 
