@@ -73,10 +73,9 @@ public class HDFSDataStream extends AbstractHDFSWriter {
       }
     }
 
-    boolean appending = false;
-    if (conf.getBoolean("hdfs.append.support", false) == true && hdfs.isFile(dstPath)) {
+    boolean appending = isFileAppendable(conf, hdfs, dstPath);
+    if (appending) {
       outStream = hdfs.append(dstPath);
-      appending = true;
     } else {
       outStream = hdfs.create(dstPath);
     }

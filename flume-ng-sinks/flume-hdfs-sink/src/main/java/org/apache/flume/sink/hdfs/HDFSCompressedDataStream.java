@@ -86,10 +86,9 @@ public class HDFSCompressedDataStream extends AbstractHDFSWriter {
             "is not of type LocalFileSystem: " + hdfs.getClass().getName());
       }
     }
-    boolean appending = false;
-    if (conf.getBoolean("hdfs.append.support", false) == true && hdfs.isFile(dstPath)) {
+    boolean appending = isFileAppendable(conf, hdfs, dstPath);
+    if (appending) {
       fsOut = hdfs.append(dstPath);
-      appending = true;
     } else {
       fsOut = hdfs.create(dstPath);
     }
