@@ -22,7 +22,9 @@ import org.apache.flume.Context;
 import org.apache.flume.FlumeException;
 import org.apache.flume.annotations.InterfaceAudience;
 import org.apache.flume.annotations.InterfaceStability;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
@@ -277,5 +279,15 @@ public abstract class AbstractHDFSWriter implements HDFSWriter {
       logger.error(msg);
       throw new FlumeException(msg, e);
     }
+  }
+
+  protected boolean isFileAppendable(Configuration conf, FileSystem hdfs, Path dstPath)
+    throws IOException{
+      if(conf.getBoolean("hdfs.append.support", false) && hdfs.isFile(dstPath)) {
+        FileStatus fileStatus = hdfs.getFileStatus(dstPath);
+        return (fileStatus != null) && !fileStatus.isErasureCoded();
+      } else {
+        return false;
+      }
   }
 }
