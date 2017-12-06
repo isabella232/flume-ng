@@ -111,7 +111,7 @@ limitations under the License.
     <xerces.version>2.9.1</xerces.version>
     <wiremock.version>1.53</wiremock.version>
     <zookeeper.version>3.4.5</zookeeper.version>
-    <scala-library.version>2.11.11</scala-library.version>
+    <scala-library.version>2.11.12</scala-library.version>
   </properties>
 
   <modules>
