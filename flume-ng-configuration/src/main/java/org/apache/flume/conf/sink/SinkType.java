@@ -74,13 +74,6 @@ public enum SinkType {
   THRIFT("org.apache.flume.sink.ThriftSink"),
 
   /**
-   * ElasticSearch sink
-   *
-   * @see org.apache.flume.sink.elasticsearch.ElasticSearchSink
-   */
-  ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSink"),
-
-  /**
    * HBase2 sink
    *
    * @see org.apache.flume.sink.hbase2.HBase2Sink

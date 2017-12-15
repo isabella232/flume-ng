@@ -121,13 +121,6 @@ public class SinkConfiguration extends ComponentConfiguration {
     THRIFT("org.apache.flume.conf.sink.ThriftSinkConfiguration"),
 
     /**
-     * ElasticSearch Sink
-     *
-     * @see org.apache.flume.sink.elasticsearch.ElasticSearchSink
-     */
-    ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSinkConfiguration"),
-
-    /**
      * HBase Sink
      *
      * @see org.apache.flume.sink.hbase2.HBase2Sink
