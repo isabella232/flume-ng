@@ -76,13 +76,6 @@ public enum SinkType implements ComponentWithClassName {
   THRIFT("org.apache.flume.sink.ThriftSink"),
 
   /**
-   * ElasticSearch sink
-   *
-   * @see org.apache.flume.sink.elasticsearch.ElasticSearchSink
-   */
-  ELASTICSEARCH("org.apache.flume.sink.elasticsearch.ElasticSearchSink"),
-
-  /**
    * HBase sink
    *
    * @see org.apache.flume.sink.hbase.HBaseSink

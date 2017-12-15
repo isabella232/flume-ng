@@ -61,7 +61,6 @@ limitations under the License.
     <commons-lang.version>2.5</commons-lang.version>
     <curator.version>2.6.0</curator.version>
     <derby.version>10.14.1.0</derby.version>
-    <elasticsearch.version>0.90.1</elasticsearch.version>
     <fasterxml.jackson.version>2.9.7</fasterxml.jackson.version>
     <fest-reflect.version>1.4</fest-reflect.version>
     <geronimo-jms.version>1.1.1</geronimo-jms.version>
@@ -967,20 +966,7 @@ limitations under the License.
            pulling different version of zookeeper as transient
            dependency from asynchbase. -->
 
-      <dependency>
-        <groupId>org.elasticsearch</groupId>
-        <artifactId>elasticsearch</artifactId>
-        <version>${elasticsearch.version}</version>
-        <optional>true</optional>
-      </dependency>
 
-      <dependency>
-        <groupId>org.elasticsearch</groupId>
-        <artifactId>elasticsearch</artifactId>
-        <version>${elasticsearch.version}</version>
-        <classifier>tests</classifier>
-        <scope>test</scope>
-      </dependency>
 
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
@@ -1095,12 +1081,6 @@ limitations under the License.
       <dependency>
         <groupId>org.apache.flume.flume-ng-sinks</groupId>
         <artifactId>flume-ng-hbase2-sink</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.flume.flume-ng-sinks</groupId>
-        <artifactId>flume-ng-elasticsearch-sink</artifactId>
         <version>${project.version}</version>
       </dependency>
 
