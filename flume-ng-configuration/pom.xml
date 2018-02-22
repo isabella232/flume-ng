@@ -61,5 +61,9 @@ limitations under the License.
       <groupId>org.apache.flume</groupId>
       <artifactId>flume-ng-sdk</artifactId>
     </dependency>
+      <dependency>
+          <groupId>org.apache.flume</groupId>
+          <artifactId>flume-ng-config-filter-api</artifactId>
+      </dependency>
   </dependencies>
 </project>
