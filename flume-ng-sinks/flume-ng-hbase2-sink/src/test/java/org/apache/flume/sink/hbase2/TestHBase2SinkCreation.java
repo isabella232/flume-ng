@@ -39,6 +39,9 @@ public class TestHBase2SinkCreation {
     Sink sink = sinkFactory.create("hbase2-sink", "hbase2");
     Assert.assertNotNull(sink);
     Assert.assertTrue(typeClass.isInstance(sink));
+    Sink aliasSink = sinkFactory.create("aliasHbase2-sink", "hbase");
+    Assert.assertNotNull(aliasSink);
+    Assert.assertTrue(typeClass.isInstance(aliasSink));
   }
 
   @Test
