@@ -81,6 +81,13 @@ public enum SinkType {
   HBASE2("org.apache.flume.sink.hbase2.HBase2Sink"),
 
   /**
+   * HBase2 sink that is an alias for HBase sink
+   *
+   * @see org.apache.flume.sink.hbase2.HBase2Sink
+   */
+  HBASE("org.apache.flume.sink.hbase2.HBase2Sink"),
+
+  /**
    * MorphlineSolr sink
    *
    * @see org.apache.flume.sink.solr.morphline.MorphlineSolrSink
