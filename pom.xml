@@ -63,7 +63,7 @@ limitations under the License.
     <commons-lang.version>${cdh.commons-lang.version}</commons-lang.version>
     <curator.version>2.6.0</curator.version>
     <derby.version>10.14.1.0</derby.version>
-    <fasterxml.jackson.version>2.8.9</fasterxml.jackson.version>
+    <fasterxml.jackson.version>${cdh.jackson2.version}</fasterxml.jackson.version>
     <fest-reflect.version>1.4</fest-reflect.version>
     <gson.version>2.2.4</gson.version>
     <guava.version>18.0</guava.version>
