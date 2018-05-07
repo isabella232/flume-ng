@@ -36,6 +36,7 @@ import org.apache.flume.conf.Configurables;
 import org.apache.flume.conf.ConfigurationException;
 import org.apache.flume.event.EventBuilder;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.apache.hadoop.hbase.HConstants;
 import org.apache.hadoop.hbase.TableName;
@@ -70,12 +71,13 @@ public class TestHBase2Sink {
   private static final Logger logger =
       LoggerFactory.getLogger(TestHBase2Sink.class);
 
-  private static final HBaseTestingUtility testUtility = new HBaseTestingUtility();
   private static final String tableName = "TestHbaseSink";
   private static final String columnFamily = "TestColumnFamily";
   private static final String inColumn = "iCol";
   private static final String plCol = "pCol";
   private static final String valBase = "testing hbase sink: jham";
+
+  private static HBaseTestingUtility testUtility;
 
   private Configuration conf;
 
@@ -83,6 +85,10 @@ public class TestHBase2Sink {
   public static void setUpOnce() throws Exception {
     String hbaseVer = org.apache.hadoop.hbase.util.VersionInfo.getVersion();
     System.out.println("HBASE VERSION:" + hbaseVer);
+
+    Configuration conf = HBaseConfiguration.create();
+    conf.setBoolean("hbase.localcluster.assign.random.ports", true);
+    testUtility = new HBaseTestingUtility(conf);
     testUtility.startMiniCluster();
   }
 
