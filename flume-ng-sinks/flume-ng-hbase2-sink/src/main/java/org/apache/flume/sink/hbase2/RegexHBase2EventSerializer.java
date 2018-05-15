@@ -38,7 +38,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * An {@link HbaseEventSerializer} which parses columns based on a supplied
+ * An {@link HBase2EventSerializer} which parses columns based on a supplied
  * regular expression and column name list.
  * <p>
  * Note that if the regular expression does not return the correct number of
@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * <p>
  * See static constant variables for configuration options.
  */
-public class RegexHbaseEventSerializer implements HbaseEventSerializer {
+public class RegexHBase2EventSerializer implements HBase2EventSerializer {
   // Config vars
   /** Regular expression used to parse groups from event data. */
   public static final String REGEX_CONFIG = "regex";

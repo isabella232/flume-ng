@@ -18,8 +18,6 @@
  */
 package org.apache.flume.sink.hbase2;
 
-import org.apache.flume.sink.hbase2.HbaseEventSerializer;
-import org.apache.flume.sink.hbase2.BatchAware;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -35,7 +33,7 @@ import java.util.List;
 /**
  * For Increment-related unit tests.
  */
-class IncrementHBaseSerializer implements HbaseEventSerializer, BatchAware {
+class IncrementHBase2Serializer implements HBase2EventSerializer, BatchAware {
   private Event event;
   private byte[] family;
   private int numBatchesStarted = 0;

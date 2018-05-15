@@ -28,12 +28,12 @@ import org.apache.hadoop.hbase.client.Row;
 
 /**
  * Interface for an event serializer which serializes the headers and body
- * of an event to write them to hbase. This is configurable, so any config
+ * of an event to write them to HBase 2. This is configurable, so any config
  * params required should be taken through this. Only the column family is
  * passed in. The columns should exist in the table and column family
- * specified in the configuration for the HbaseSink.
+ * specified in the configuration for the HBase2Sink.
  */
-public interface HbaseEventSerializer extends Configurable, ConfigurableComponent {
+public interface HBase2EventSerializer extends Configurable, ConfigurableComponent {
   /**
    * Initialize the event serializer.
    * @param event Event to be written to HBase
@@ -43,7 +43,7 @@ public interface HbaseEventSerializer extends Configurable, ConfigurableComponen
 
   /**
    * Get the actions that should be written out to hbase as a result of this
-   * event. This list is written to hbase using the HBase batch API.
+   * event. This list is written to HBase using the HBase batch API.
    * @return List of {@link org.apache.hadoop.hbase.client.Row} which
    * are written as such to HBase.
    *
