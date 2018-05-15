@@ -29,16 +29,7 @@
       </plugin>
     </plugins>
   </build>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.apache.hbase</groupId>
-        <artifactId>hbase-common</artifactId>
-        <version>${hbase.version}</version>
-        <type>test-jar</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+
   <dependencies>
 
     <dependency>
@@ -54,6 +45,18 @@
     <dependency>
       <groupId>org.apache.flume</groupId>
       <artifactId>flume-ng-configuration</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>${hadoop.common.artifact.id}</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-client</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -84,12 +87,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>${hadoop.common.artifact.id}</artifactId>
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>
@@ -107,163 +104,23 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.flume.flume-ng-sinks</groupId>
-      <artifactId>flume-hdfs-sink</artifactId>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-minicluster</artifactId>
+      <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase-common</artifactId>
+      <artifactId>hbase-testing-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.zookeeper</groupId>
+      <artifactId>zookeeper</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>hadoop-1.0</id>
-      <activation>
-        <property>
-          <name>flume.hadoop.profile</name>
-          <value>1</value>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-test</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <!-- required because the hadoop-core pom is missing these deps
-            and MiniDFSCluster pulls in the webhdfs classes -->
-        <dependency>
-          <groupId>com.sun.jersey</groupId>
-          <artifactId>jersey-core</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase</artifactId>
-          <optional>true</optional>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase</artifactId>
-          <classifier>tests</classifier>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.zookeeper</groupId>
-          <artifactId>zookeeper</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>hadoop-2</id>
-      <activation>
-        <property>
-          <name>flume.hadoop.profile</name>
-          <value>2</value>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-minicluster</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase</artifactId>
-          <optional>true</optional>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase</artifactId>
-          <classifier>tests</classifier>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.zookeeper</groupId>
-          <artifactId>zookeeper</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>hbase-1</id>
-      <activation>
-        <property>
-          <name>!flume.hadoop.profile</name>
-        </property>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-minicluster</artifactId>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-client</artifactId>
-          <version>${hbase.version}</version>
-          <optional>true</optional>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-client</artifactId>
-          <version>${hbase.version}</version>
-          <classifier>tests</classifier>
-          <scope>test</scope>
-        </dependency>
-
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-server</artifactId>
-          <version>${hbase.version}</version>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-server</artifactId>
-          <version>${hbase.version}</version>
-          <classifier>tests</classifier>
-          <scope>test</scope>
-        </dependency>
-
-        <!-- There should be no need for Flume to include the following two
-         artifacts, but HBase pom has a bug which causes these to not get
-         pulled in. So we have to pull it in. Ideally this should be optional,
-         but making it optional causes build to fail.
-        -->
-
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-common</artifactId>
-          <version>${hbase.version}</version>
-          <optional>true</optional>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.hbase</groupId>
-          <artifactId>hbase-testing-util</artifactId>
-          <version>${hbase.version}</version>
-          <scope>test</scope>
-        </dependency>
-
-        <dependency>
-          <groupId>org.apache.zookeeper</groupId>
-          <artifactId>zookeeper</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 
 </project>

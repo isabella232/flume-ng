@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * A simple serializer that returns puts from an event, by writing the event
- * body into it. The headers are discarded. It also updates a row in hbase
+ * body into it. The headers are discarded. It also updates a row in HBase
  * which acts as an event counter.
  * <p>Takes optional parameters:<p>
  * <tt>rowPrefix:</tt> The prefix to be used. Default: <i>default</i><p>
@@ -47,7 +47,7 @@ import java.util.List;
  * <tt>incColumn:</tt> Which column to increment. Null means no column is
  * incremented.
  */
-public class SimpleHbaseEventSerializer implements HbaseEventSerializer {
+public class SimpleHBase2EventSerializer implements HBase2EventSerializer {
   private String rowPrefix;
   private byte[] incrementRow;
   private byte[] cf;
@@ -56,7 +56,7 @@ public class SimpleHbaseEventSerializer implements HbaseEventSerializer {
   private KeyType keyType;
   private byte[] payload;
 
-  public SimpleHbaseEventSerializer() {
+  public SimpleHBase2EventSerializer() {
   }
 
   @Override

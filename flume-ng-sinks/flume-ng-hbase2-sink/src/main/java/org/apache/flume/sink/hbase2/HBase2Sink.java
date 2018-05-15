@@ -64,21 +64,21 @@ import java.util.Map;
 import java.util.NavigableMap;
 
 /**
- * A simple sink which reads events from a channel and writes them to HBase.
- * The Hbase configuration is picked up from the first <tt>hbase-site.xml</tt>
+ * A simple sink which reads events from a channel and writes them to HBase 2.
+ * The HBase configuration is picked up from the first <tt>hbase-site.xml</tt>
  * encountered in the classpath. This sink supports batch reading of
- * events from the channel, and writing them to Hbase, to minimize the number
- * of flushes on the hbase tables. To use this sink, it has to be configured
+ * events from the channel, and writing them to HBase, to minimize the number
+ * of flushes on the HBase tables. To use this sink, it has to be configured
  * with certain mandatory parameters:<p>
- * <tt>table: </tt> The name of the table in Hbase to write to. <p>
- * <tt>columnFamily: </tt> The column family in Hbase to write to.<p>
+ * <tt>table: </tt> The name of the table in HBase to write to. <p>
+ * <tt>columnFamily: </tt> The column family in HBase to write to.<p>
  * This sink will commit each transaction if the table's write buffer size is
  * reached or if the number of events in the current transaction reaches the
  * batch size, whichever comes first.<p>
  * Other optional parameters are:<p>
- * <tt>serializer:</tt> A class implementing {@link HbaseEventSerializer}.
+ * <tt>serializer:</tt> A class implementing {@link HBase2EventSerializer}.
  * An instance of
- * this class will be used to write out events to hbase.<p>
+ * this class will be used to write out events to HBase.<p>
  * <tt>serializer.*:</tt> Passed in the configure() method to serializer
  * as an object of {@link org.apache.flume.Context}.<p>
  * <tt>batchSize: </tt>This is the batch size used by the client. This is the
@@ -87,9 +87,9 @@ import java.util.NavigableMap;
  * <p>
  * <p>
  * <strong>Note: </strong> While this sink flushes all events in a transaction
- * to HBase in one shot, Hbase does not guarantee atomic commits on multiple
- * rows. So if a subset of events in a batch are written to disk by Hbase and
- * Hbase fails, the flume transaction is rolled back, causing flume to write
+ * to HBase in one shot, HBase does not guarantee atomic commits on multiple
+ * rows. So if a subset of events in a batch are written to disk by HBase and
+ * HBase fails, the flume transaction is rolled back, causing flume to write
  * all the events in the transaction all over again, which will cause
  * duplicates. The serializer is expected to take care of the handling of
  * duplicates etc. HBase also does not support batch increments, so if
@@ -104,7 +104,7 @@ public class HBase2Sink extends AbstractSink implements Configurable {
   private long batchSize;
   private final Configuration config;
   private static final Logger logger = LoggerFactory.getLogger(HBase2Sink.class);
-  private HbaseEventSerializer serializer;
+  private HBase2EventSerializer serializer;
   private String kerberosPrincipal;
   private String kerberosKeytab;
   private boolean enableWal = true;
@@ -218,15 +218,15 @@ public class HBase2Sink extends AbstractSink implements Configurable {
               "HBase major version number must be at least 2 for hbase2sink");
     }
 
-    tableName = context.getString(HBaseSinkConfigurationConstants.CONFIG_TABLE);
+    tableName = context.getString(HBase2SinkConfigurationConstants.CONFIG_TABLE);
     String cf = context.getString(
-        HBaseSinkConfigurationConstants.CONFIG_COLUMN_FAMILY);
+        HBase2SinkConfigurationConstants.CONFIG_COLUMN_FAMILY);
     batchSize = context.getLong(
-        HBaseSinkConfigurationConstants.CONFIG_BATCHSIZE, 100L);
+        HBase2SinkConfigurationConstants.CONFIG_BATCHSIZE, 100L);
     Context serializerContext = new Context();
     //If not specified, will use HBase defaults.
     String eventSerializerType = context.getString(
-            HBaseSinkConfigurationConstants.CONFIG_SERIALIZER);
+            HBase2SinkConfigurationConstants.CONFIG_SERIALIZER);
     Preconditions.checkNotNull(tableName,
         "Table name cannot be empty, please specify in configuration file");
     Preconditions.checkNotNull(cf,
@@ -234,15 +234,15 @@ public class HBase2Sink extends AbstractSink implements Configurable {
     //Check foe event serializer, if null set event serializer type
     if (eventSerializerType == null || eventSerializerType.isEmpty()) {
       eventSerializerType =
-          "org.apache.flume.sink.hbase2.SimpleHbaseEventSerializer";
+          "org.apache.flume.sink.hbase2.SimpleHBase2EventSerializer";
       logger.info("No serializer defined, Will use default");
     }
     serializerContext.putAll(context.getSubProperties(
-        HBaseSinkConfigurationConstants.CONFIG_SERIALIZER_PREFIX));
+        HBase2SinkConfigurationConstants.CONFIG_SERIALIZER_PREFIX));
     columnFamily = cf.getBytes(Charsets.UTF_8);
     try {
-      Class<? extends HbaseEventSerializer> clazz =
-          (Class<? extends HbaseEventSerializer>)
+      Class<? extends HBase2EventSerializer> clazz =
+          (Class<? extends HBase2EventSerializer>)
               Class.forName(eventSerializerType);
       serializer = clazz.newInstance();
       serializer.configure(serializerContext);
@@ -250,11 +250,11 @@ public class HBase2Sink extends AbstractSink implements Configurable {
       logger.error("Could not instantiate event serializer.", e);
       Throwables.propagate(e);
     }
-    kerberosKeytab = context.getString(HBaseSinkConfigurationConstants.CONFIG_KEYTAB);
-    kerberosPrincipal = context.getString(HBaseSinkConfigurationConstants.CONFIG_PRINCIPAL);
+    kerberosKeytab = context.getString(HBase2SinkConfigurationConstants.CONFIG_KEYTAB);
+    kerberosPrincipal = context.getString(HBase2SinkConfigurationConstants.CONFIG_PRINCIPAL);
 
-    enableWal = context.getBoolean(HBaseSinkConfigurationConstants
-        .CONFIG_ENABLE_WAL, HBaseSinkConfigurationConstants.DEFAULT_ENABLE_WAL);
+    enableWal = context.getBoolean(HBase2SinkConfigurationConstants
+        .CONFIG_ENABLE_WAL, HBase2SinkConfigurationConstants.DEFAULT_ENABLE_WAL);
     logger.info("The write to WAL option is set to: " + String.valueOf(enableWal));
     if (!enableWal) {
       logger.warn("HBase Sink's enableWal configuration is set to false. All " +
@@ -263,15 +263,15 @@ public class HBase2Sink extends AbstractSink implements Configurable {
     }
 
     batchIncrements = context.getBoolean(
-        HBaseSinkConfigurationConstants.CONFIG_COALESCE_INCREMENTS,
-        HBaseSinkConfigurationConstants.DEFAULT_COALESCE_INCREMENTS);
+        HBase2SinkConfigurationConstants.CONFIG_COALESCE_INCREMENTS,
+        HBase2SinkConfigurationConstants.DEFAULT_COALESCE_INCREMENTS);
 
     if (batchIncrements) {
       logger.info("Increment coalescing is enabled. Increments will be " +
           "buffered.");
     }
 
-    String zkQuorum = context.getString(HBaseSinkConfigurationConstants
+    String zkQuorum = context.getString(HBase2SinkConfigurationConstants
         .ZK_QUORUM);
     Integer port = null;
     /*
@@ -310,7 +310,7 @@ public class HBase2Sink extends AbstractSink implements Configurable {
       this.config.setInt(HConstants.ZOOKEEPER_CLIENT_PORT, port);
     }
     String hbaseZnode = context.getString(
-        HBaseSinkConfigurationConstants.ZK_ZNODE_PARENT);
+        HBase2SinkConfigurationConstants.ZK_ZNODE_PARENT);
     if (hbaseZnode != null && !hbaseZnode.isEmpty()) {
       this.config.set(HConstants.ZOOKEEPER_ZNODE_PARENT, hbaseZnode);
     }
@@ -536,7 +536,7 @@ public class HBase2Sink extends AbstractSink implements Configurable {
 
   @VisibleForTesting
   @InterfaceAudience.Private
-  HbaseEventSerializer getSerializer() {
+  HBase2EventSerializer getSerializer() {
     return serializer;
   }
 

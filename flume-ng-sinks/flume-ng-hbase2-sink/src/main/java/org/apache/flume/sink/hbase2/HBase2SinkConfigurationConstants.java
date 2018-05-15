@@ -24,9 +24,9 @@ import org.apache.hadoop.hbase.HConstants;
  * Constants used for configuration of HBaseSink2
  *
  */
-public class HBaseSinkConfigurationConstants {
+public class HBase2SinkConfigurationConstants {
   /**
-   * The Hbase table which the sink should write to.
+   * The HBase table which the sink should write to.
    */
   public static final String CONFIG_TABLE = "table";
   /**

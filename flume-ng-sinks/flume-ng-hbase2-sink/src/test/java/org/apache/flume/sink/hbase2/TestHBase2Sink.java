@@ -69,7 +69,7 @@ import static org.mockito.Mockito.*;
 
 public class TestHBase2Sink {
   private static final Logger logger =
-      LoggerFactory.getLogger(TestHBase2Sink.class);
+          LoggerFactory.getLogger(TestHBase2Sink.class);
 
   private static final String tableName = "TestHbaseSink";
   private static final String columnFamily = "TestColumnFamily";
@@ -99,7 +99,7 @@ public class TestHBase2Sink {
 
   /**
    * Most common context setup for unit tests using
-   * {@link SimpleHbaseEventSerializer}.
+   * {@link SimpleHBase2EventSerializer}.
    */
   @Before
   public void setUp() throws IOException {
@@ -113,38 +113,38 @@ public class TestHBase2Sink {
   }
 
   /**
-   * Set up {@link Context} for use with {@link SimpleHbaseEventSerializer}.
+   * Set up {@link Context} for use with {@link SimpleHBase2EventSerializer}.
    */
-  private Context getContextForSimpleHbaseEventSerializer() {
+  private Context getContextForSimpleHBase2EventSerializer() {
     Context ctx = new Context();
     ctx.put("table", tableName);
     ctx.put("columnFamily", columnFamily);
-    ctx.put("serializer", SimpleHbaseEventSerializer.class.getName());
+    ctx.put("serializer", SimpleHBase2EventSerializer.class.getName());
     ctx.put("serializer.payloadColumn", plCol);
     ctx.put("serializer.incrementColumn", inColumn);
     return ctx;
   }
 
   /**
-   * Set up {@link Context} for use with {@link IncrementHBaseSerializer}.
+   * Set up {@link Context} for use with {@link IncrementHBase2Serializer}.
    */
   private Context getContextForIncrementHBaseSerializer() {
     Context ctx = new Context();
     ctx.put("table", tableName);
     ctx.put("columnFamily", columnFamily);
-    ctx.put("serializer", IncrementHBaseSerializer.class.getName());
+    ctx.put("serializer", IncrementHBase2Serializer.class.getName());
     return ctx;
   }
 
   /**
-   * Set up {@link Context} for use with {@link IncrementHBaseSerializer}.
+   * Set up {@link Context} for use with {@link IncrementHBase2Serializer}.
    */
   private Context getContextWithoutIncrementHBaseSerializer() {
     //Create a context without setting increment column and payload Column
     Context ctx = new Context();
     ctx.put("table", tableName);
     ctx.put("columnFamily", columnFamily);
-    ctx.put("serializer", SimpleHbaseEventSerializer.class.getName());
+    ctx.put("serializer", SimpleHBase2EventSerializer.class.getName());
     return ctx;
   }
 
@@ -180,7 +180,7 @@ public class TestHBase2Sink {
 
   @Test
   public void testOneEvent() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     HBase2Sink sink = new HBase2Sink(conf);
     Configurables.configure(sink, ctx);
     Channel channel = new MemoryChannel();
@@ -210,7 +210,7 @@ public class TestHBase2Sink {
 
   @Test
   public void testThreeEvents() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     ctx.put("batchSize", "3");
     HBase2Sink sink = new HBase2Sink(conf);
     Configurables.configure(sink, ctx);
@@ -250,7 +250,7 @@ public class TestHBase2Sink {
 
   @Test
   public void testMultipleBatches() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     ctx.put("batchSize", "2");
     HBase2Sink sink = new HBase2Sink(conf);
     Configurables.configure(sink, ctx);
@@ -297,7 +297,7 @@ public class TestHBase2Sink {
   @Test(expected = FlumeException.class)
   public void testMissingTable() throws Exception {
     logger.info("Running testMissingTable()");
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
 
     // setUp() will create the table, so we delete it.
     logger.info("Deleting table {}", tableName);
@@ -355,7 +355,7 @@ public class TestHBase2Sink {
           "and uncomment this annotation to run this test.")
   @Test(expected = EventDeliveryException.class)
   public void testHBaseFailure() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     ctx.put("batchSize", "2");
     HBase2Sink sink = new HBase2Sink(conf);
     Configurables.configure(sink, ctx);
@@ -397,7 +397,7 @@ public class TestHBase2Sink {
   }
 
   /**
-   * Makes Hbase scans to get rows in the payload column and increment column
+   * Makes HBase scans to get rows in the payload column and increment column
    * in the table given. Expensive, so tread lightly.
    * Calling this function multiple times for the same result set is a bad
    * idea. Cache the result set once it is returned by this function.
@@ -450,7 +450,7 @@ public class TestHBase2Sink {
 
   @Test
   public void testTransactionStateOnChannelException() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     ctx.put("batchSize", "1");
 
     HBase2Sink sink = new HBase2Sink(conf);
@@ -489,10 +489,10 @@ public class TestHBase2Sink {
 
   @Test
   public void testTransactionStateOnSerializationException() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     ctx.put("batchSize", "1");
-    ctx.put(HBaseSinkConfigurationConstants.CONFIG_SERIALIZER,
-            "org.apache.flume.sink.hbase2.MockSimpleHbaseEventSerializer");
+    ctx.put(HBase2SinkConfigurationConstants.CONFIG_SERIALIZER,
+            "org.apache.flume.sink.hbase2.MockSimpleHBase2EventSerializer");
 
     HBase2Sink sink = new HBase2Sink(conf);
     Configurables.configure(sink, ctx);
@@ -509,13 +509,13 @@ public class TestHBase2Sink {
     tx.commit();
     tx.close();
     try {
-      MockSimpleHbaseEventSerializer.throwException = true;
+      MockSimpleHBase2EventSerializer.throwException = true;
       sink.process();
       Assert.fail("FlumeException expected from serializer");
     } catch (FlumeException ex) {
       Assert.assertEquals("Exception for testing", ex.getMessage());
     }
-    MockSimpleHbaseEventSerializer.throwException = false;
+    MockSimpleHBase2EventSerializer.throwException = false;
     sink.process();
     sink.stop();
 
@@ -531,13 +531,13 @@ public class TestHBase2Sink {
 
   @Test
   public void testWithoutConfigurationObject() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     Context tmpContext = new Context(ctx.getParameters());
     tmpContext.put("batchSize", "2");
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_QUORUM,
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_QUORUM,
                    ZKConfig.getZKQuorumServersString(conf));
-    System.out.print(ctx.getString(HBaseSinkConfigurationConstants.ZK_QUORUM));
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_ZNODE_PARENT,
+    System.out.print(ctx.getString(HBase2SinkConfigurationConstants.ZK_QUORUM));
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_ZNODE_PARENT,
                    conf.get(HConstants.ZOOKEEPER_ZNODE_PARENT,
                             HConstants.DEFAULT_ZOOKEEPER_ZNODE_PARENT));
 
@@ -582,13 +582,13 @@ public class TestHBase2Sink {
 
   @Test
   public void testZKQuorum() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     Context tmpContext = new Context(ctx.getParameters());
     String zkQuorum = "zk1.flume.apache.org:3342, zk2.flume.apache.org:3342, " +
                       "zk3.flume.apache.org:3342";
     tmpContext.put("batchSize", "2");
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_QUORUM, zkQuorum);
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_ZNODE_PARENT,
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_QUORUM, zkQuorum);
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_ZNODE_PARENT,
                    conf.get(HConstants.ZOOKEEPER_ZNODE_PARENT,
                             HConstants.DEFAULT_ZOOKEEPER_ZNODE_PARENT));
     HBase2Sink sink = new HBase2Sink();
@@ -601,14 +601,14 @@ public class TestHBase2Sink {
 
   @Test(expected = FlumeException.class)
   public void testZKQuorumIncorrectPorts() throws Exception {
-    Context ctx = getContextForSimpleHbaseEventSerializer();
+    Context ctx = getContextForSimpleHBase2EventSerializer();
     Context tmpContext = new Context(ctx.getParameters());
 
     String zkQuorum = "zk1.flume.apache.org:3345, zk2.flume.apache.org:3342, " +
                       "zk3.flume.apache.org:3342";
     tmpContext.put("batchSize", "2");
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_QUORUM, zkQuorum);
-    tmpContext.put(HBaseSinkConfigurationConstants.ZK_ZNODE_PARENT,
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_QUORUM, zkQuorum);
+    tmpContext.put(HBase2SinkConfigurationConstants.ZK_ZNODE_PARENT,
                    conf.get(HConstants.ZOOKEEPER_ZNODE_PARENT,
                             HConstants.DEFAULT_ZOOKEEPER_ZNODE_PARENT));
     HBase2Sink sink = new HBase2Sink();
@@ -620,7 +620,7 @@ public class TestHBase2Sink {
   public void testCoalesce() throws EventDeliveryException {
     Context ctx = getContextForIncrementHBaseSerializer();
     ctx.put("batchSize", "100");
-    ctx.put(HBaseSinkConfigurationConstants.CONFIG_COALESCE_INCREMENTS,
+    ctx.put(HBase2SinkConfigurationConstants.CONFIG_COALESCE_INCREMENTS,
         String.valueOf(true));
 
     final Map<String, Long> expectedCounts = Maps.newHashMap();
@@ -680,7 +680,7 @@ public class TestHBase2Sink {
     }
     sink.stop();
     Assert.assertEquals(batchCount,
-        ((IncrementHBaseSerializer) sink.getSerializer()).getNumBatchesStarted());
+        ((IncrementHBase2Serializer) sink.getSerializer()).getNumBatchesStarted());
   }
 
   @Test (expected = ConfigurationException.class)
@@ -703,7 +703,7 @@ public class TestHBase2Sink {
 
   /**
    * For testing that the rows coalesced, serialized by
-   * {@link IncrementHBaseSerializer}, are of the expected batch size.
+   * {@link IncrementHBase2Serializer}, are of the expected batch size.
    */
   private static class CoalesceValidator
       implements HBase2Sink.DebugIncrementsCallback {

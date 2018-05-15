@@ -19,13 +19,12 @@
 
 package org.apache.flume.sink.hbase2;
 
-import org.apache.flume.sink.hbase2.SimpleHbaseEventSerializer;
 import java.util.List;
 
 import org.apache.flume.FlumeException;
 import org.apache.hadoop.hbase.client.Row;
 
-class MockSimpleHbaseEventSerializer extends SimpleHbaseEventSerializer {
+class MockSimpleHBase2EventSerializer extends SimpleHBase2EventSerializer {
 
   public static boolean throwException = false;
 
