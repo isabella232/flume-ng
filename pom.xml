@@ -61,7 +61,7 @@ limitations under the License.
     <commons-dbcp.version>${cdh.commons-dbcp.version}</commons-dbcp.version>
     <commons-io.version>${cdh.commons-io.version}</commons-io.version>
     <commons-lang.version>${cdh.commons-lang.version}</commons-lang.version>
-    <curator.version>2.6.0</curator.version>
+    <curator.version>2.12.0</curator.version>
     <derby.version>10.14.1.0</derby.version>
     <fasterxml.jackson.version>${cdh.jackson2.version}</fasterxml.jackson.version>
     <fest-reflect.version>1.4</fest-reflect.version>
