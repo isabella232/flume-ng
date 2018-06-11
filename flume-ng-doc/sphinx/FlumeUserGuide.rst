@@ -2474,15 +2474,15 @@ HBaseSinks
 HBase2Sink
 ''''''''''
 
-This sink writes data to HBase. The Hbase configuration is picked up from the first
-hbase-site.xml encountered in the classpath. A class implementing HbaseEventSerializer
+This sink writes data to HBase 2. The HBase configuration is picked up from the first
+hbase-site.xml encountered in the classpath. A class implementing HBase2EventSerializer
 which is specified by the configuration is used to convert the events into
 HBase puts and/or increments. These puts and increments are then written
 to HBase. This sink provides the same consistency guarantees as HBase,
-which is currently row-wise atomicity. In the event of Hbase failing to
+which is currently row-wise atomicity. In the event of HBase failing to
 write certain events, the sink will replay all events in that transaction.
 
-The HBaseSink supports writing data to secure HBase. To write to secure HBase, the user
+The HBase2Sink supports writing data to secure HBase. To write to secure HBase, the user
 the agent is running as must have write permissions to the table the sink is configured
 to write to. The principal and keytab to use to authenticate against the KDC can be specified
 in the configuration. The hbase-site.xml in the Flume agent's classpath
@@ -2490,34 +2490,34 @@ must have authentication set to ``kerberos`` (For details on how to do this, ple
 HBase documentation).
 
 For convenience, two serializers are provided with Flume. The
-SimpleHbaseEventSerializer (org.apache.flume.sink.hbase.SimpleHbaseEventSerializer)
+SimpleHBase2EventSerializer (org.apache.flume.sink.hbase2.SimpleHBase2EventSerializer)
 writes the event body
-as-is to HBase, and optionally increments a column in Hbase. This is primarily
-an example implementation. The RegexHbaseEventSerializer
-(org.apache.flume.sink.hbase.RegexHbaseEventSerializer) breaks the event body
+as-is to HBase, and optionally increments a column in HBase. This is primarily
+an example implementation. The RegexHBase2EventSerializer
+(org.apache.flume.sink.hbase2.RegexHBase2EventSerializer) breaks the event body
 based on the given regex and writes each part into different columns.
 
-The type is the FQCN: org.apache.flume.sink.hbase.HBaseSink.
+The type is the FQCN: org.apache.flume.sink.hbase2.HBase2Sink.
 
 Required properties are in **bold**.
 
-==================  ======================================================  ==============================================================================
-Property Name       Default                                                 Description
-==================  ======================================================  ==============================================================================
+==================  ========================================================  ==============================================================================
+Property Name       Default                                                   Description
+==================  ========================================================  ==============================================================================
 **channel**         --
-**type**            --                                                      The component type name, needs to be ``hbase``
-**table**           --                                                      The name of the table in Hbase to write to.
-**columnFamily**    --                                                      The column family in Hbase to write to.
-zookeeperQuorum     --                                                      The quorum spec. This is the value for the property ``hbase.zookeeper.quorum`` in hbase-site.xml
-znodeParent         /hbase                                                  The base path for the znode for the -ROOT- region. Value of ``zookeeper.znode.parent`` in hbase-site.xml
-batchSize           100                                                     Number of events to be written per txn.
-coalesceIncrements  false                                                   Should the sink coalesce multiple increments to a cell per batch. This might give
-                                                                            better performance if there are multiple increments to a limited number of cells.
-serializer          org.apache.flume.sink.hbase.SimpleHbaseEventSerializer  Default increment column = "iCol", payload column = "pCol".
-serializer.*        --                                                      Properties to be passed to the serializer.
-kerberosPrincipal   --                                                      Kerberos user principal for accessing secure HBase
-kerberosKeytab      --                                                      Kerberos keytab for accessing secure HBase
-==================  ======================================================  ==============================================================================
+**type**            --                                                        The component type name, needs to be ``hbase2``
+**table**           --                                                        The name of the table in HBase to write to.
+**columnFamily**    --                                                        The column family in HBase to write to.
+zookeeperQuorum     --                                                        The quorum spec. This is the value for the property ``hbase.zookeeper.quorum`` in hbase-site.xml
+znodeParent         /hbase                                                    The base path for the znode for the -ROOT- region. Value of ``zookeeper.znode.parent`` in hbase-site.xml
+batchSize           100                                                       Number of events to be written per txn.
+coalesceIncrements  false                                                     Should the sink coalesce multiple increments to a cell per batch. This might give
+                                                                              better performance if there are multiple increments to a limited number of cells.
+serializer          org.apache.flume.sink.hbase2.SimpleHBase2EventSerializer  Default increment column = "iCol", payload column = "pCol".
+serializer.*        --                                                        Properties to be passed to the serializer.
+kerberosPrincipal   --                                                        Kerberos user principal for accessing secure HBase
+kerberosKeytab      --                                                        Kerberos keytab for accessing secure HBase
+==================  ========================================================  ==============================================================================
 
 Example for agent named a1:
 
@@ -2528,7 +2528,7 @@ Example for agent named a1:
   a1.sinks.k1.type = hbase2
   a1.sinks.k1.table = foo_table
   a1.sinks.k1.columnFamily = bar_cf
-  a1.sinks.k1.serializer = org.apache.flume.sink.hbase2.RegexHbaseEventSerializer
+  a1.sinks.k1.serializer = org.apache.flume.sink.hbase2.RegexHBase2EventSerializer
   a1.sinks.k1.channel = c1
 
 AsyncHBaseSink
@@ -4648,8 +4648,7 @@ org.apache.flume.Sink                                         null              
 org.apache.flume.Sink                                         logger                  org.apache.flume.sink.LoggerSink
 org.apache.flume.Sink                                         avro                    org.apache.flume.sink.AvroSink
 org.apache.flume.Sink                                         hdfs                    org.apache.flume.sink.hdfs.HDFSEventSink
-org.apache.flume.Sink                                         hbase                   org.apache.flume.sink.hbase.HBaseSink
-org.apache.flume.Sink                                         asynchbase              org.apache.flume.sink.hbase.AsyncHBaseSink
+org.apache.flume.Sink                                         hbase2                  org.apache.flume.sink.hbase2.HBase2Sink
 org.apache.flume.Sink                                         elasticsearch           org.apache.flume.sink.elasticsearch.ElasticSearchSink
 org.apache.flume.Sink                                         file_roll               org.apache.flume.sink.RollingFileSink
 org.apache.flume.Sink                                         irc                     org.apache.flume.sink.irc.IRCSink
