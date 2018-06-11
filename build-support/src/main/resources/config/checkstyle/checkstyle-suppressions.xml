@@ -41,7 +41,7 @@ under the License.
 
     <!-- TODO: Rearrange methods in below classes to keep overloaded methods adjacent -->
     <suppress checks="OverloadMethodsDeclarationOrder"
-              files="channel[/\\]file|RpcClientFactory\.java|BucketPath\.java|SinkGroup\.java|DefaultSinkProcessor\.java|RegexExtractorInterceptorMillisSerializer\.java|SimpleAsyncHbaseEventSerializer\.java|hdfs[/\\]BucketWriter\.java|AbstractBasicChannelSemanticsTest\.java"/>
+              files="channel[/\\]file|RpcClientFactory\.java|BucketPath\.java|SinkGroup\.java|DefaultSinkProcessor\.java|RegexExtractorInterceptorMillisSerializer\.java|hdfs[/\\]BucketWriter\.java|AbstractBasicChannelSemanticsTest\.java"/>
 
     <!-- TODO: Fix inner class names to follow standard convention -->
     <suppress checks="TypeName"
