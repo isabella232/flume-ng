@@ -372,6 +372,7 @@ public class AvroSource extends AbstractSource implements EventDrivenSource,
     } catch (ChannelException ex) {
       logger.warn("Avro source " + getName() + ": Unable to process event. " +
           "Exception follows.", ex);
+      sourceCounter.incrementChannelWriteFail();
       return Status.FAILED;
     }
 
@@ -402,6 +403,7 @@ public class AvroSource extends AbstractSource implements EventDrivenSource,
     } catch (Throwable t) {
       logger.error("Avro source " + getName() + ": Unable to process event " +
           "batch. Exception follows.", t);
+      sourceCounter.incrementChannelWriteFail();
       if (t instanceof Error) {
         throw (Error) t;
       }
