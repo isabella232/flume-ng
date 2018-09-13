@@ -154,6 +154,14 @@ add_hive_paths(){
   fi
 }
 
+add_kudu_paths() {
+  local KUDU_LIBS=${KUDU_HOME:-${FLUME_HOME}/../kudu}/
+
+  if [ -d "$KUDU_LIBS" ] && [ -f $KUDU_LIBS/kudu-flume-sink.jar ]; then
+    FLUME_CLASSPATH="$FLUME_CLASSPATH:$KUDU_LIBS/kudu-flume-sink.jar"
+  fi
+}
+
 set_LD_LIBRARY_PATH(){
 #Append the FLUME_JAVA_LIBRARY_PATH to whatever the user may have specified in
 #flume-env.sh
@@ -424,6 +432,7 @@ add_hadoop_paths
 add_HBASE_paths
 add_hive_paths
 add_search_paths
+add_kudu_paths
 
 # prepend conf dir to classpath
 if [ -n "$opt_conf" ]; then
