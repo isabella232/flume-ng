@@ -74,11 +74,5 @@
       <artifactId>kafka-clients</artifactId>
       <version>${kafka.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.apache.kafka</groupId>
-      <artifactId>kafka_${scala.binary.version}</artifactId>
-      <classifier>test</classifier>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>
