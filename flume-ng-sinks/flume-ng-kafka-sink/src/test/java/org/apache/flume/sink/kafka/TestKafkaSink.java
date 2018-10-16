@@ -81,7 +81,7 @@ import static org.junit.Assert.fail;
  */
 public class TestKafkaSink {
 
-  private final static TestUtil testUtil = TestUtil.getInstance();
+  private static final TestUtil testUtil = TestUtil.getInstance();
   private final Set<String> usedTopics = new HashSet<String>();
 
   @BeforeClass
@@ -689,7 +689,7 @@ public class TestKafkaSink {
   }
 
   private void deleteTopic(String topicName) {
-      testUtil.deleteTopic(topicName);
+    testUtil.deleteTopic(topicName);
   }
 
   private String findUnusedTopic() {

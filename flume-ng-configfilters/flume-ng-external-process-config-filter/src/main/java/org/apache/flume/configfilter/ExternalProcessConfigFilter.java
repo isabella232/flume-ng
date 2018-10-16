@@ -52,10 +52,7 @@ public class ExternalProcessConfigFilter extends AbstractConfigFilter {
 
   @Override
   public void initializeWithConfiguration(Map<String, String> configuration) {
-    String charsetName = configuration.get(CHARSET_KEY);
-    if(charsetName == null) {
-      charsetName = CHARSET_DEFAULT;
-    }
+    String charsetName = configuration.getOrDefault(CHARSET_KEY, CHARSET_DEFAULT);
     try {
       charset = Charset.forName(charsetName);
     } catch (UnsupportedCharsetException ex) {

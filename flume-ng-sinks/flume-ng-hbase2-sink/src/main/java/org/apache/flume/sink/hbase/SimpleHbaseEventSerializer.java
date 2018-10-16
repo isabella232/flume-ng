@@ -30,5 +30,6 @@ import org.apache.flume.sink.hbase2.SimpleHBase2EventSerializer;
  * Only for backward compatibility. Use {@link SimpleHBase2EventSerializer} instead.
  */
 @Deprecated
-public class SimpleHbaseEventSerializer extends SimpleHBase2EventSerializer implements HbaseEventSerializer {
+public class SimpleHbaseEventSerializer extends SimpleHBase2EventSerializer
+        implements HbaseEventSerializer {
 }

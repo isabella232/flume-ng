@@ -163,7 +163,7 @@ public class KafkaSourceEmbeddedKafka {
     return adminClient;
   }
 
-  public void deleteTopics(List<String> topic){
+  public void deleteTopics(List<String> topic) {
     getAdminClient().deleteTopics(topic);
   }
 

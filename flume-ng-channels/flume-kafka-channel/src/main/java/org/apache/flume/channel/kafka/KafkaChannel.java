@@ -306,12 +306,11 @@ public class KafkaChannel extends BasicChannelSemantics {
     }
   }
 
-
   private void migrateOffsets() {
-    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect, JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT,
-            ZK_CONNECTION_TIMEOUT, 10, Time.SYSTEM, "kafka.server", "SessionExpireListener");
-         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(consumerProps))
-    {
+    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect,
+            JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT, ZK_CONNECTION_TIMEOUT, 10,
+            Time.SYSTEM, "kafka.server", "SessionExpireListener");
+         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(consumerProps)) {
       Map<TopicPartition, OffsetAndMetadata> kafkaOffsets = getKafkaOffsets(consumer);
       if (!kafkaOffsets.isEmpty()) {
         logger.info("Found Kafka offsets for topic {}. Will not migrate from zookeeper", topicStr);
@@ -320,7 +319,8 @@ public class KafkaChannel extends BasicChannelSemantics {
       }
 
       logger.info("No Kafka offsets found. Migrating zookeeper offsets");
-      Map<TopicPartition, OffsetAndMetadata> zookeeperOffsets = getZookeeperOffsets(zkClient, consumer);
+      Map<TopicPartition, OffsetAndMetadata> zookeeperOffsets =
+              getZookeeperOffsets(zkClient, consumer);
       if (zookeeperOffsets.isEmpty()) {
         logger.warn("No offsets to migrate found in Zookeeper");
         return;
@@ -355,7 +355,6 @@ public class KafkaChannel extends BasicChannelSemantics {
 
   private Map<TopicPartition, OffsetAndMetadata> getZookeeperOffsets(
           KafkaZkClient zkClient, KafkaConsumer<String, byte[]> consumer) {
-
     Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
     List<PartitionInfo> partitions = consumer.partitionsFor(topicStr);
     for (PartitionInfo partition : partitions) {

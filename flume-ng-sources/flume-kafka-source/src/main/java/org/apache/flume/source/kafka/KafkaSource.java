@@ -469,10 +469,11 @@ public class KafkaSource extends AbstractPollableSource
    * Allows for backwards compatibility of the zookeeperConnect configuration.
    */
   private String lookupBootstrap(String zookeeperConnect, SecurityProtocol securityProtocol) {
-    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect, JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT,
-            ZK_CONNECTION_TIMEOUT, 10, Time.SYSTEM, "kafka.server", "SessionExpireListener"))
-    {
-      List<Broker> brokerList = JavaConverters.seqAsJavaListConverter(zkClient.getAllBrokersInCluster()).asJava();
+    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect,
+            JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT, ZK_CONNECTION_TIMEOUT, 10,
+            Time.SYSTEM, "kafka.server", "SessionExpireListener")) {
+      List<Broker> brokerList =
+              JavaConverters.seqAsJavaListConverter(zkClient.getAllBrokersInCluster()).asJava();
       List<BrokerEndPoint> endPoints = brokerList.stream()
               .map(broker -> broker.brokerEndPoint(
                   ListenerName.forSecurityProtocol(securityProtocol))
@@ -554,10 +555,10 @@ public class KafkaSource extends AbstractPollableSource
   }
 
   private void migrateOffsets(String topicStr) {
-    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect, JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT,
-            ZK_CONNECTION_TIMEOUT, 10, Time.SYSTEM, "kafka.server", "SessionExpireListener");
-         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(kafkaProps))
-    {
+    try (KafkaZkClient zkClient = KafkaZkClient.apply(zookeeperConnect,
+            JaasUtils.isZkSecurityEnabled(), ZK_SESSION_TIMEOUT, ZK_CONNECTION_TIMEOUT, 10,
+            Time.SYSTEM, "kafka.server", "SessionExpireListener");
+         KafkaConsumer<String, byte[]> consumer = new KafkaConsumer<>(kafkaProps)) {
       Map<TopicPartition, OffsetAndMetadata> kafkaOffsets =
           getKafkaOffsets(consumer, topicStr);
       if (!kafkaOffsets.isEmpty()) {

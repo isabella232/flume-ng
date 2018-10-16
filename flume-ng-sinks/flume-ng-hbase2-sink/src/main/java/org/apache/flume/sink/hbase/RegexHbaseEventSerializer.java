@@ -30,5 +30,6 @@ import org.apache.flume.sink.hbase2.RegexHBase2EventSerializer;
  * Only for backward compatibility. Use {@link RegexHBase2EventSerializer} instead.
  */
 @Deprecated
-public class RegexHbaseEventSerializer extends RegexHBase2EventSerializer implements HbaseEventSerializer {
+public class RegexHbaseEventSerializer extends RegexHBase2EventSerializer
+        implements HbaseEventSerializer {
 }

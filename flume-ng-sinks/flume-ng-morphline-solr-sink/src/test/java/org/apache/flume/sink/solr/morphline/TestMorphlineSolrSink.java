@@ -95,7 +95,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
         "solrconfig.xml",
         "schema.xml",
         RESOURCES_DIR + "/solr"
-        );
+    );
   }
 
   @Before

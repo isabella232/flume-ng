@@ -132,7 +132,7 @@ public class TestKafkaSource {
     kafkaSource.setChannelProcessor(createGoodChannel());
   }
 
-  private static void startupCheck(){
+  private static void startupCheck() {
     String startupTopic = "startupCheck";
     KafkaConsumer<String, String> startupConsumer;
     kafkaServer.createTopic(startupTopic, 1);
@@ -141,19 +141,19 @@ public class TestKafkaSource {
     props.put(ConsumerConfig.GROUP_ID_CONFIG, "group_1");
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-    KafkaConsumer<String, String>consumer = new KafkaConsumer<>(props);
+    KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
     consumer.subscribe(Collections.singletonList(startupTopic));
     log.info("Checking Startup");
     boolean success = false;
-    for (int i = 0; i<20; i++) {
+    for (int i = 0; i < 20; i++) {
       kafkaServer.produce(startupTopic, "", "record");
       ConsumerRecords recs = consumer.poll(Duration.ofMillis(1000L));
-      if (!recs.isEmpty()){
+      if (!recs.isEmpty()) {
         success = true;
         break;
       }
     }
-    if (!success){
+    if (!success) {
       fail("Kafka server startup failed");
     }
     log.info("Kafka server startup success");
@@ -875,8 +875,9 @@ public class TestKafkaSource {
 
     // Commit 10th offset to zookeeper
     if (hasZookeeperOffsets) {
-      KafkaZkClient zkClient = KafkaZkClient.apply(kafkaServer.getZkConnectString(), JaasUtils.isZkSecurityEnabled(), 30000,
-              30000, 10, Time.SYSTEM, "kafka.server", "SessionExpireListener");
+      KafkaZkClient zkClient = KafkaZkClient.apply(kafkaServer.getZkConnectString(),
+              JaasUtils.isZkSecurityEnabled(), 30000, 30000, 10, Time.SYSTEM,
+              "kafka.server", "SessionExpireListener");
       zkClient.getConsumerOffset(group, new TopicPartition(topic, 0));
       Long offset = tenthOffset + 1;
       zkClient.setOrCreateConsumerOffset(group, new TopicPartition(topic, 0), offset);

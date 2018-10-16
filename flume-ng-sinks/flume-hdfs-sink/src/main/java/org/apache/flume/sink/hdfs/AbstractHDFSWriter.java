@@ -281,12 +281,12 @@ public abstract class AbstractHDFSWriter implements HDFSWriter {
   }
 
   protected boolean isFileAppendable(Configuration conf, FileSystem hdfs, Path dstPath)
-    throws IOException{
-      if(conf.getBoolean("hdfs.append.support", false) && hdfs.isFile(dstPath)) {
-        FileStatus fileStatus = hdfs.getFileStatus(dstPath);
-        return (fileStatus != null) && !fileStatus.isErasureCoded();
-      } else {
-        return false;
-      }
+          throws IOException {
+    if (conf.getBoolean("hdfs.append.support", false) && hdfs.isFile(dstPath)) {
+      FileStatus fileStatus = hdfs.getFileStatus(dstPath);
+      return (fileStatus != null) && !fileStatus.isErasureCoded();
+    } else {
+      return false;
+    }
   }
 }
