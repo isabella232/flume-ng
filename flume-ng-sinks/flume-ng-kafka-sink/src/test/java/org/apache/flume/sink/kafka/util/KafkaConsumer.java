@@ -62,6 +62,7 @@ public class KafkaConsumer {
     props.put("auto.commit.interval.ms", "1000");
     props.put("auto.offset.reset", "smallest");
     props.put("consumer.timeout.ms","1000");
+    props.put("max.poll.interval.ms","30000");
     return new ConsumerConfig(props);
   }
 
