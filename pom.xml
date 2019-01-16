@@ -40,6 +40,8 @@ limitations under the License.
     <sourceJavaVersion>1.8</sourceJavaVersion>
     <targetJavaVersion>1.8</targetJavaVersion>
 
+    <scala.binary.version>${cdh.scala.binary.version}</scala.binary.version>
+
     <!-- defaults for flaky test and focused test exclusions -->
     <test.exclude.pattern>$</test.exclude.pattern> <!-- junk pattern -->
     <test.include.pattern>**/Test*.java</test.include.pattern>
@@ -48,37 +50,37 @@ limitations under the License.
 
     <activemq.version>5.7.0</activemq.version>
     <asynchbase.version>1.7.0</asynchbase.version>
-    <avro.version>1.7.4</avro.version>
+    <avro.version>${cdh.avro.version}</avro.version>
     <bundle-plugin.version>2.3.7</bundle-plugin.version>
     <checkstyle.tool.version>8.12</checkstyle.tool.version>
-    <codehaus.jackson.version>1.9.3</codehaus.jackson.version>
-    <commons-cli.version>1.2</commons-cli.version>
-    <commons-codec.version>1.8</commons-codec.version>
-    <commons-collections.version>3.2.2</commons-collections.version>
-    <commons-compress.version>1.4.1</commons-compress.version>
-    <commons-dbcp.version>1.4</commons-dbcp.version>
-    <commons-io.version>2.1</commons-io.version>
-    <commons-lang.version>2.5</commons-lang.version>
-    <curator.version>2.6.0</curator.version>
+    <codehaus.jackson.version>${cdh.jackson.version}</codehaus.jackson.version>
+    <commons-cli.version>${cdh.commons-cli.version}</commons-cli.version>
+    <commons-codec.version>${cdh.commons-codec.version}</commons-codec.version>
+    <commons-collections.version>${cdh.commons-collections.version}</commons-collections.version>
+    <commons-compress.version>${cdh.commons-compress.version}</commons-compress.version>
+    <commons-dbcp.version>${cdh.commons-dbcp.version}</commons-dbcp.version>
+    <commons-io.version>${cdh.commons-io.version}</commons-io.version>
+    <commons-lang.version>${cdh.commons-lang.version}</commons-lang.version>
+    <curator.version>2.12.0</curator.version>
     <derby.version>10.14.1.0</derby.version>
-    <fasterxml.jackson.version>2.9.7</fasterxml.jackson.version>
+    <fasterxml.jackson.version>${cdh.jackson2.version}</fasterxml.jackson.version>
     <fest-reflect.version>1.4</fest-reflect.version>
     <geronimo-jms.version>1.1.1</geronimo-jms.version>
-    <gson.version>2.2.2</gson.version>
+    <gson.version>2.2.4</gson.version>
     <guava.version>18.0</guava.version>
     <guava-old.version>11.0.2</guava-old.version>
-    <hadoop.version>2.9.0</hadoop.version>
-    <hbase.version>2.0.0</hbase.version>
-    <httpcore.version>4.4.6</httpcore.version>
-    <httpclient.version>4.5.3</httpclient.version>
+    <hadoop.version>${cdh.hadoop.version}</hadoop.version>
+    <hbase.version>${cdh.hbase.version}</hbase.version>
+    <hive.version>${cdh.hive.version}</hive.version>
+    <httpclient.version>${cdh.httpcomponents.version}</httpclient.version>
+    <httpcore.version>${cdh.httpcomponents.core.version}</httpcore.version>
     <irclib.version>1.10</irclib.version>
     <jersey.version>1.8</jersey.version>
-    <jetty.version>9.4.6.v20170531</jetty.version>
-    <joda-time.version>2.9.9</joda-time.version>
+    <jetty.version>${cdh.jetty9.version}</jetty.version>
+    <joda-time.version>${cdh.joda-time.version}</joda-time.version>
     <junit.version>4.10</junit.version>
-    <kafka.version>2.0.1</kafka.version>
-    <kite.version>1.0.0</kite.version>
-    <hive.version>1.0.0</hive.version>
+    <kafka.version>${cdh.kafka.version}</kafka.version>
+    <kite.version>${cdh.kite.version}</kite.version>
     <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
     <log4j-extras.version>1.1</log4j-extras.version>
     <log4j-log4j.version>1.2.17</log4j-log4j.version>
@@ -100,15 +102,15 @@ limitations under the License.
     <mvn-sphinx-plugin>1.0.3</mvn-sphinx-plugin>
     <mvn-spotbugs-plugin.version>3.1.7</mvn-spotbugs-plugin.version>
     <mvn-surefire-plugin.version>2.22.1</mvn-surefire-plugin.version>
-    <netty.version>3.10.6.Final</netty.version>
+    <netty.version>${cdh.io.netty.version}</netty.version>
     <netty-all.version>4.1.17.Final</netty-all.version>
     <protobuf.version>2.5.0</protobuf.version>
     <rat.version>0.12</rat.version>
-    <snappy-java.version>1.1.4</snappy-java.version>
-    <solr-global.version>4.3.0</solr-global.version>
-    <slf4j.version>1.7.25</slf4j.version>
+    <snappy-java.version>${cdh.hadoop-snappy.version}</snappy-java.version>
+    <solr-global.version>${cdh.solr.version}</solr-global.version>
+    <slf4j.version>${cdh.slf4j.version}</slf4j.version>
     <system-rules.version>1.17.0</system-rules.version>
-    <thrift.version>0.9.3</thrift.version>
+    <thrift.version>${cdh.thrift.version}</thrift.version>
     <twitter4j.version>3.0.3</twitter4j.version>
     <xalan.version>2.7.2</xalan.version>
     <xerces.version>2.9.1</xerces.version>
@@ -1262,12 +1264,12 @@ limitations under the License.
       <!-- Dependencies of Kafka source -->
       <dependency>
         <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka_2.11</artifactId>
+        <artifactId>kafka_${scala.binary.version}</artifactId>
         <version>${kafka.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka_2.11</artifactId>
+        <artifactId>kafka_${scala.binary.version}</artifactId>
         <version>${kafka.version}</version>
         <classifier>test</classifier>
         <scope>test</scope>
@@ -1425,6 +1427,11 @@ limitations under the License.
             <artifactId>jasper-runtime</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-hdfs-client</artifactId>
+        <version>${hadoop.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>

@@ -51,12 +51,16 @@ limitations under the License.
 
     <dependency>
       <groupId>org.kitesdk</groupId>
-      <artifactId>kite-morphlines-all</artifactId>
+      <artifactId>kite-morphlines-all-except-solrcell</artifactId>
       <version>${kite.version}</version>
       <exclusions>
         <exclusion>
             <groupId>org.apache.hadoop</groupId>
            <artifactId>hadoop-common</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
         </exclusion>
       </exclusions>
       <type>pom</type>
