@@ -68,9 +68,7 @@ limitations under the License.
     <guava.version>18.0</guava.version>
     <guava-old.version>11.0.2</guava-old.version>
     <hadoop.version>2.9.0</hadoop.version>
-    <hbase.version>1.0.0</hbase.version>
-    <hbase2.jetty.version>9.3.19.v20170502</hbase2.jetty.version>
-    <hbase2.version>2.0.0</hbase2.version>
+    <hbase.version>2.0.0</hbase.version>
     <httpcore.version>4.4.6</httpcore.version>
     <httpclient.version>4.5.3</httpclient.version>
     <irclib.version>1.10</irclib.version>
@@ -1074,12 +1072,6 @@ limitations under the License.
 
       <dependency>
         <groupId>org.apache.flume.flume-ng-sinks</groupId>
-        <artifactId>flume-ng-hbase-sink</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.flume.flume-ng-sinks</groupId>
         <artifactId>flume-ng-hbase2-sink</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -1230,22 +1222,6 @@ limitations under the License.
         <groupId>org.apache.mina</groupId>
         <artifactId>mina-core</artifactId>
         <version>${mina.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.hbase</groupId>
-        <artifactId>asynchbase</artifactId>
-        <version>${asynchbase.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.jboss.netty</groupId>
-            <artifactId>netty</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
 
       <dependency>

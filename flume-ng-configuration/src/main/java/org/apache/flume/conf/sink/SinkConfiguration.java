@@ -115,20 +115,6 @@ public class SinkConfiguration extends ComponentConfiguration {
     THRIFT("org.apache.flume.conf.sink.ThriftSinkConfiguration"),
 
     /**
-     * HBase Sink
-     *
-     * @see org.apache.flume.sink.hbase.HBaseSink
-     */
-    HBASE("org.apache.flume.sink.hbase.HBaseSinkConfiguration"),
-
-    /**
-     * AsyncHBase Sink
-     *
-     * @see org.apache.flume.sink.hbase.AsyncHBaseSink
-     */
-    ASYNCHBASE("org.apache.flume.sink.hbase.HBaseSinkConfiguration"),
-
-    /**
      * HBase2 sink
      *
      * @see org.apache.flume.sink.hbase2.HBase2Sink

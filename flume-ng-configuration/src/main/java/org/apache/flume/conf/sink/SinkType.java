@@ -76,13 +76,6 @@ public enum SinkType implements ComponentWithClassName {
   THRIFT("org.apache.flume.sink.ThriftSink"),
 
   /**
-   * HBase sink
-   *
-   * @see org.apache.flume.sink.hbase.HBaseSink
-   */
-  HBASE("org.apache.flume.sink.hbase.HBaseSink"),
-
-  /**
    * AsyncHBase sink
    *
    * @see org.apache.flume.sink.hbase.AsyncHBaseSink
