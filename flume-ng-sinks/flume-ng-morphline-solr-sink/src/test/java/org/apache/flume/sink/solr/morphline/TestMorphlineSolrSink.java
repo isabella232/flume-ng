@@ -50,6 +50,7 @@ import org.apache.solr.common.SolrDocument;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -94,7 +95,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
         "solrconfig.xml",
         "schema.xml",
         RESOURCES_DIR + "/solr"
-        );
+    );
   }
 
   @Before
@@ -218,6 +219,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
     }
   }
 
+  @Ignore
   @Test
   public void testDocumentTypes() throws Exception {
     String path = RESOURCES_DIR + "/test-documents";
@@ -242,6 +244,7 @@ public class TestMorphlineSolrSink extends SolrTestCaseJ4 {
     testDocumentTypesInternal(files);
   }
 
+  @Ignore
   @Test
   public void testDocumentTypes2() throws Exception {
     String path = RESOURCES_DIR + "/test-documents";

@@ -35,6 +35,7 @@ limitations under the License.
   <properties>
     <!-- Set default encoding to UTF-8 to remove maven complaints -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javaVersion>1.8</javaVersion>
 
     <!-- Java compiler configuration -->
     <sourceJavaVersion>1.8</sourceJavaVersion>
@@ -49,7 +50,6 @@ limitations under the License.
     <stagingDirectory>${project.basedir}/target/docs</stagingDirectory>
 
     <activemq.version>5.7.0</activemq.version>
-    <asynchbase.version>1.7.0</asynchbase.version>
     <avro.version>${cdh.avro.version}</avro.version>
     <bundle-plugin.version>2.3.7</bundle-plugin.version>
     <checkstyle.tool.version>8.12</checkstyle.tool.version>
@@ -422,12 +422,31 @@ limitations under the License.
     <url>http://www.apache.org</url>
   </organization>
 
-  <distributionManagement>
-    <repository>
-      <id>apache.staging.https</id>
-      <name>Apache Staging Repository</name>
-      <url>https://repository.apache.org/service/local/staging/deploy/maven2/</url>
+  <repositories>
+     <repository>
+      <id>cdh.repo</id>
+      <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
+      <name>Cloudera Repositories</name>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>
+
+    <repository>
+      <id>cdh.snapshots.repo</id>
+      <url>https://repository.cloudera.com/artifactory/libs-snapshot-local</url>
+      <name>Cloudera Snapshots Repository</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+
+  </repositories>
+
+  <distributionManagement>
     <site>
       <id>apache.website</id>
       <url>${siteUrlDeployment}</url>
@@ -438,10 +457,13 @@ limitations under the License.
   <build>
 
     <plugins>
-
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -491,6 +513,9 @@ limitations under the License.
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${mvn-surefire-plugin.version}</version>
           <configuration>
+              <systemPropertyVariables>
+                <org.apache.hadoop.hbase.shaded.io.netty.packagePrefix>org.apache.hadoop.hbase.shaded.</org.apache.hadoop.hbase.shaded.io.netty.packagePrefix>
+              </systemPropertyVariables>
             <reuseForks>false</reuseForks>
             <forkCount>1</forkCount>
             <rerunFailingTestsCount>10</rerunFailingTestsCount>
@@ -502,6 +527,10 @@ limitations under the License.
             <excludes>
               <exclude>**/*$*</exclude>
               <exclude>${test.exclude.pattern}</exclude>
+              <!-- CDH-45148 Fix flaky tests in org.apache.flume.source.thriftLegacy.TestThriftLegacySource -->
+              <exclude>**/TestThriftLegacySource.java</exclude>
+              <!-- CDH-51264 Fix flaky test org.apache.flume.channel.file.TestFileChannelRestart.testCompressBackup -->
+              <exclude>**/TestFileChannelRestart.java</exclude>
             </excludes>
           </configuration>
         </plugin>
@@ -522,6 +551,10 @@ limitations under the License.
               <exclude>.repository/</exclude>
               <exclude>**/*.diff</exclude>
               <exclude>**/*.patch</exclude>
+              <exclude>cloudera/*</exclude>
+              <exclude>PATCH.txt</exclude>
+              <!-- Exclude buildinfo files from RAT, since they're only used for CDH unit test aggregation. -->
+              <exclude>*buildinfo</exclude>
               <exclude>**/*.avsc</exclude>
               <exclude>**/*.avro</exclude>
               <exclude>**/docs/**</exclude>
@@ -642,6 +675,46 @@ limitations under the License.
               </fileset>
             </filesets>
           </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.0</version>
+          <inherited>false</inherited>
+          <configuration>
+            <rules>
+              <requireMavenVersion>
+                <version>[3.0.0,)</version>
+              </requireMavenVersion>
+              <requireJavaVersion>
+                <version>[${javaVersion}.0,${javaVersion}.1000}]</version>
+              </requireJavaVersion>
+            </rules>
+          </configuration>
+          <executions>
+            <execution>
+              <id>clean</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <phase>pre-clean</phase>
+            </execution>
+            <execution>
+              <id>default</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>site</id>
+              <goals>
+                <goal>enforce</goal>
+              </goals>
+              <phase>pre-site</phase>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
@@ -1215,6 +1288,12 @@ limitations under the License.
       </dependency>
 
       <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-streaming-flume-sink_${scala.binary.version}</artifactId>
+        <version>${cdh.spark.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.sun.jersey</groupId>
         <artifactId>jersey-core</artifactId>
         <version>${jersey.version}</version>
@@ -1289,6 +1368,12 @@ limitations under the License.
         <groupId>org.kitesdk</groupId>
         <artifactId>kite-data-core</artifactId>
         <version>${kite.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.kitesdk</groupId>
@@ -1500,6 +1585,23 @@ limitations under the License.
         <version>${hbase.version}</version>
       </dependency>
 
+
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase-hadoop-compat</artifactId>
+        <version>${hbase.version}</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.hbase</groupId>
+        <artifactId>hbase-hadoop2-compat</artifactId>
+        <version>${hbase.version}</version>
+        <classifier>tests</classifier>
+        <scope>test</scope>
+      </dependency>
+
       <!-- There should be no need for Flume to include the following two
        artifacts, but HBase pom has a bug which causes these to not get
        pulled in. So we have to pull it in. Ideally this should be optional,
@@ -1573,12 +1675,10 @@ limitations under the License.
         <reportSets>
           <reportSet>
             <reports>
-              <report>ci-management</report>
-              <report>distribution-management</report>
-              <report>team</report>
-              <report>mailing-lists</report>
-              <report>issue-management</report>
-              <report>licenses</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>issue-tracking</report>
+              <report>license</report>
               <report>scm</report>
             </reports>
           </reportSet>

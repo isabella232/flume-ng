@@ -866,7 +866,7 @@
      <str name="echoHandler">true</str>
     </lst>
   </requestHandler>
-  
+
   <!-- Search Components
 
        Search components are registered to SolrCore and used by 
@@ -1439,7 +1439,7 @@
 
   <!-- Query Parsers
 
-       https://cwiki.apache.org/confluence/display/solr/Query+Syntax+and+Parsing
+       http://wiki.apache.org/solr/SolrQuerySyntax
 
        Multiple QParserPlugins can be registered by name, and then
        used in either the "defType" param for the QueryComponent (used
@@ -1487,5 +1487,11 @@
       EditorialMarkerFactory will do exactly that:
      <transformer name="qecBooster" class="org.apache.solr.response.transform.EditorialMarkerFactory" />
     -->
+
+
+  <!-- Legacy config for the admin interface -->
+  <admin>
+    <defaultQuery>*:*</defaultQuery>
+  </admin>
 
 </config>

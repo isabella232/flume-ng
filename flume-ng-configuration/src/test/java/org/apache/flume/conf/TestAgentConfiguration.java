@@ -198,12 +198,12 @@ public class TestAgentConfiguration {
   public void testNoSinksIsValid() {
     Map<String, String> properties = new HashMap<>(PROPERTIES);
     properties.remove(SINKS);
-    properties.remove(SINKS + ".k1.type", "k1_type");
-    properties.remove(SINKS + ".k2.type", "null");
-    properties.remove(SINKS + ".k1.channel", "c1");
-    properties.remove(SINKS + ".k2.channel", "c2");
-    properties.remove(AGENT + ".sinkgroups", "g1");
-    properties.remove(AGENT + ".sinkgroups.g1.sinks", "k1 k2");
+    properties.remove(SINKS + ".k1.type");
+    properties.remove(SINKS + ".k2.type");
+    properties.remove(SINKS + ".k1.channel");
+    properties.remove(SINKS + ".k2.channel");
+    properties.remove(AGENT + ".sinkgroups");
+    properties.remove(AGENT + ".sinkgroups.g1.sinks");
 
     FlumeConfiguration flumeConfiguration = new FlumeConfiguration(properties);
 
