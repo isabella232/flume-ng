@@ -23,6 +23,7 @@ import com.google.common.primitives.Longs;
 import org.apache.flume.Channel;
 import org.apache.flume.ChannelSelector;
 import org.apache.flume.Context;
+import org.apache.flume.Sink;
 import org.apache.flume.SinkProcessor;
 import org.apache.flume.SinkRunner;
 import org.apache.flume.channel.ChannelProcessor;
@@ -34,6 +35,7 @@ import org.apache.flume.source.SequenceGeneratorSource;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -71,7 +73,7 @@ public class TestHDFSEventSinkDeadlock {
     source.start();
 
     SinkProcessor sinkProcessor = new DefaultSinkProcessor();
-    sinkProcessor.setSinks(Collections.singletonList(sink));
+    sinkProcessor.setSinks(Arrays.<Sink>asList(sink));
     SinkRunner sinkRunner = new SinkRunner();
     sinkRunner.setSink(sinkProcessor);
     sinkRunner.start();
