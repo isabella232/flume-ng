@@ -88,15 +88,16 @@ limitations under the License.
     <mina.version>2.0.4</mina.version>
     <mockito.version>1.9.0</mockito.version>
     <mvn-antrun-plugin.version>1.8</mvn-antrun-plugin.version>
-    <mvn-assembly-plugin.version>3.1.0</mvn-assembly-plugin.version>
-    <mvn-build-helper-plugin>3.0.0</mvn-build-helper-plugin>
+    <mvn-assembly-plugin.version>2.3</mvn-assembly-plugin.version>
+    <mvn-build-helper-plugin>1.7</mvn-build-helper-plugin>
     <mvn-checkstyle-plugin.version>3.0.0</mvn-checkstyle-plugin.version>
     <mvn-checksum-plugin.version>1.7</mvn-checksum-plugin.version>
-    <mvn-clean-plugin.version>3.1.0</mvn-clean-plugin.version>
-    <mvn-compiler-plugin.version>3.8.0</mvn-compiler-plugin.version>
+    <mvn-clean-plugin.version>2.4.1</mvn-clean-plugin.version>
+    <mvn-compiler-plugin.version>2.3.2</mvn-compiler-plugin.version>
     <mvn-gpg-plugin.version>1.6</mvn-gpg-plugin.version>
     <mvn-javadoc-plugin.version>2.9</mvn-javadoc-plugin.version>
-    <mvn-paranamer-plugin.version>2.8</mvn-paranamer-plugin.version>
+    <mvn-paranamer-plugin.version>2.3</mvn-paranamer-plugin.version>
+    <mvn-project-info-reports-plugin.version>2.4</mvn-project-info-reports-plugin.version>
     <mvn-pmd-plugin.version>3.11.0</mvn-pmd-plugin.version>
     <mvn-site-plugin.version>3.7.1</mvn-site-plugin.version>
     <mvn-sphinx-plugin>1.0.3</mvn-sphinx-plugin>
@@ -1672,6 +1673,7 @@ limitations under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${mvn-project-info-reports-plugin.version}</version>
         <reportSets>
           <reportSet>
             <reports>
