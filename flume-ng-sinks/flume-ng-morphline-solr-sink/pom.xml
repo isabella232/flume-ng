@@ -35,6 +35,7 @@ limitations under the License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <solr.version>${solr-global.version}</solr.version>
     <solr.expected.version>${solr-global.version}</solr.expected.version> <!-- sanity check to verify we actually run against the expected version rather than some outdated version -->
+    <junit.version>4.12</junit.version>
   </properties>
 
   <dependencies>
