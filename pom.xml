@@ -21,13 +21,13 @@ limitations under the License.
   <parent>
     <groupId>com.cloudera.cdh</groupId>
     <artifactId>cdh-root</artifactId>
-    <version>6.2.x-SNAPSHOT</version>
+    <version>6.2.0</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.flume</groupId>
   <artifactId>flume-parent</artifactId>
-  <version>1.9.0-cdh6.2.x-SNAPSHOT</version>
+  <version>1.9.0-cdh6.2.0</version>
   <packaging>pom</packaging>
 
   <name>Apache Flume</name>
