@@ -238,5 +238,9 @@ limitations under the License.
       <artifactId>libthrift</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+    </dependency>
   </dependencies>
 </project>
